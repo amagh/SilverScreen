@@ -19,9 +19,34 @@ public class Movie implements Parcelable{
 
     private double voteAverage;
 
-    public Movie() {
+    Movie() {
 
     }
+
+    private Movie(Parcel in) {
+        this.posterPath = in.readString();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+        this.title = in.readString();
+        this.backdropPath = in.readString();
+
+        this.id = in.readInt();
+        this.voteCount = in.readInt();
+
+        this.voteAverage = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel parcel) {
+            return new Movie(parcel);
+        }
+
+        @Override
+        public Movie[] newArray(int i) {
+            return new Movie[i];
+        }
+    };
 
     @Override
     public int describeContents() {
@@ -30,6 +55,16 @@ public class Movie implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(posterPath);
+        parcel.writeString(overview);
+        parcel.writeString(releaseDate);
+        parcel.writeString(title);
+        parcel.writeString(backdropPath);
+
+        parcel.writeInt(id);
+        parcel.writeInt(voteCount);
+
+        parcel.writeDouble(voteAverage);
 
     }
 
