@@ -5,8 +5,11 @@ import android.os.AsyncTask;
 import android.support.annotation.IntDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,22 +33,43 @@ public class MovieListActivity extends AppCompatActivity {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef ({POPULAR, RATING})
     @interface SortMethod {}
-    public static final int POPULAR = 0;
-    public static final int RATING = 1;
+    private static final int POPULAR = 0;
+    private static final int RATING = 1;
 
     // Mem Vars
     private RecyclerView mRecyclerView;
+    private MovieAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
+        // Obtain references to Views
         mRecyclerView = (RecyclerView) findViewById(R.id.movie_list_rv);
+        mProgressBar = (ProgressBar) findViewById(R.id.movie_list_pb);
 
+        // Init/set LayoutManager
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        // Init/set MovieAdapter
+        mAdapter = new MovieAdapter(mMovieClickHandler);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
+
+        // Fetch movies
         FetchMoviesTask moviesTask = new FetchMoviesTask(POPULAR);
         moviesTask.execute();
     }
+
+    private final MovieAdapter.MovieClickHandler mMovieClickHandler = new MovieAdapter.MovieClickHandler() {
+        @Override
+        public void onMovieClick(Movie movie) {
+
+        }
+    };
 
     private class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
         // Constants
@@ -81,6 +105,11 @@ public class MovieListActivity extends AppCompatActivity {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -120,15 +149,17 @@ public class MovieListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Movie> movies) {
+            mProgressBar.setVisibility(View.INVISIBLE);
             if (movies != null && movies.size() > 0) {
                 // Add movies to Adapter
-                for (Movie movie : movies) {
-                    Log.d(TAG, "Movie title; " + movie.getTitle());
-                }
+                mAdapter.setMoviesList(movies);
             }
         }
 
         List<Movie> getMoviesFromJson(String jsonString) throws JSONException {
+            final String TMDB_POSTER_BASE_PATH = "https://image.tmdb.org/t/p/w185";
+            final String TMDB_BACKDROP_BASE_PATH = "https://image.tmdb.org/t/p/w300";
+
             // JSON parsing Strings
             String jsonResultsArray = "results";
             String jsonPoster = "poster_path";
@@ -154,11 +185,11 @@ public class MovieListActivity extends AppCompatActivity {
                 JSONObject movieObject = resultsArray.getJSONObject(i);
 
                 Movie movie = new Movie();
-                movie.setPosterPath(movieObject.getString(jsonPoster));
+                movie.setPosterPath(TMDB_POSTER_BASE_PATH + movieObject.getString(jsonPoster));
                 movie.setOverview(movieObject.getString(jsonOverview));
                 movie.setReleaseDate(movieObject.getString(jsonReleaseDate));
                 movie.setTitle(movieObject.getString(jsonTitle));
-                movie.setBackdropPath(movieObject.getString(jsonBackdrop));
+                movie.setBackdropPath(TMDB_BACKDROP_BASE_PATH + movieObject.getString(jsonBackdrop));
                 movie.setId(movieObject.getInt(jsonId));
                 movie.setVoteCount(movieObject.getInt(jsonVoteCount));
                 movie.setVoteAverage(movieObject.getDouble(jsonVoteAverage));
