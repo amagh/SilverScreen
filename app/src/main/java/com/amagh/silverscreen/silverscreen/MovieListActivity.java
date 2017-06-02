@@ -1,16 +1,21 @@
 package com.amagh.silverscreen.silverscreen;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.IntDef;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,12 +72,88 @@ public class MovieListActivity extends AppCompatActivity {
         moviesTask.execute();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu to allow for sorting
+        getMenuInflater().inflate(R.menu.menu_movie_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort: {
+
+                // Show a Dialog to allow the user to select how to query TheMovieDB.org
+                AlertDialog dialog = buildSortDialog();
+
+                // Show the Dialog when the menu item is selected
+                dialog.show();
+
+                return true;
+            }
+
+            default: return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    /**
+     * Builds an AlertDialog with option to select either sort by popular or top rated
+     *
+     * @return AlertDialog
+     */
+    private AlertDialog buildSortDialog() {
+        // Build and return the AlertDialog
+        return new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_sort_title))
+                .setView(R.layout.dialog_sort)
+                .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog1, int i) {
+                        // Obtain references to the RadioButton Views
+                        RadioButton popularRadioButton =
+                                (RadioButton) ((AlertDialog) dialog1).findViewById(R.id.dialog_popular_rb);
+
+                        RadioButton topRatedRadioButton =
+                                (RadioButton) ((AlertDialog) dialog1).findViewById(R.id.dialog_top_rated_rb);
+
+                        assert popularRadioButton != null;
+                        assert topRatedRadioButton != null;
+
+                        // Check which RadioButton is checked and launch FetchMovieTask with
+                        // the correct parameters
+                        if (popularRadioButton.isChecked()) {
+                            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(POPULAR);
+                            fetchMoviesTask.execute();
+                        } else if (topRatedRadioButton.isChecked()){
+                            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(RATING);
+                            fetchMoviesTask.execute();
+                        }
+
+                    }
+                })
+                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Do nothing. Just dismiss the Dialog
+                    }
+                })
+                .create();
+    }
+
+
     private final MovieAdapter.MovieClickHandler mMovieClickHandler = new MovieAdapter.MovieClickHandler() {
         @Override
         public void onMovieClick(Movie movie) {
+            // Build an explicit Intent to launch MovieDetailsActivity
             Intent intent = new Intent(MovieListActivity.this, MovieDetailsActivity.class);
+
+            // Put the Movie Object corresponding to the selected movie poster as an Extra to the
+            // Intent
             intent.putExtra(EXTRA_MOVIE, movie);
 
+            // Start MovieDetailsActivity
             startActivity(intent);
         }
     };
@@ -89,7 +170,7 @@ public class MovieListActivity extends AppCompatActivity {
         // Mem Vars
         private URL mBuiltUrl;
 
-        public FetchMoviesTask(@SortMethod int sortMethod) {
+        FetchMoviesTask(@SortMethod int sortMethod) {
             // Build the URL for accessing TMDB API depending on what sort method the user has
             // selected
 

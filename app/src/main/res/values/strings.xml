@@ -91,6 +91,11 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="action_sort">Sort</string>
     <string name="format_release_date">Released: %s</string>
     <string name="format_rating">%.1f/10</string>
+
+    <string name="dialog_sort_title">Sort by</string>
+    <string name="dialog_popular">Most Popular</string>
+    <string name="dialog_top_rated">Top Rated</string>
 </resources>

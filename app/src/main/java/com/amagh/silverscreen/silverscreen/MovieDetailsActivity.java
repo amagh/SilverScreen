@@ -67,6 +67,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setToolbarTitle();
 
         if (futureRelease) {
+            // When landscape mode is utilized, the backdrop will be loaded
             loadBackdropImage();
         } else {
             // Load the Poster Image
