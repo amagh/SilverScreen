@@ -1,5 +1,6 @@
 package com.amagh.silverscreen.silverscreen;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.IntDef;
@@ -25,6 +26,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static com.amagh.silverscreen.silverscreen.MovieDetailsActivity.EXTRAS.EXTRA_MOVIE;
 
 public class MovieListActivity extends AppCompatActivity {
     // Constants
@@ -67,7 +70,10 @@ public class MovieListActivity extends AppCompatActivity {
     private final MovieAdapter.MovieClickHandler mMovieClickHandler = new MovieAdapter.MovieClickHandler() {
         @Override
         public void onMovieClick(Movie movie) {
+            Intent intent = new Intent(MovieListActivity.this, MovieDetailsActivity.class);
+            intent.putExtra(EXTRA_MOVIE, movie);
 
+            startActivity(intent);
         }
     };
 
@@ -158,7 +164,7 @@ public class MovieListActivity extends AppCompatActivity {
 
         List<Movie> getMoviesFromJson(String jsonString) throws JSONException {
             final String TMDB_POSTER_BASE_PATH = "https://image.tmdb.org/t/p/w185";
-            final String TMDB_BACKDROP_BASE_PATH = "https://image.tmdb.org/t/p/w300";
+            final String TMDB_BACKDROP_BASE_PATH = "https://image.tmdb.org/t/p/w780";
 
             // JSON parsing Strings
             String jsonResultsArray = "results";
