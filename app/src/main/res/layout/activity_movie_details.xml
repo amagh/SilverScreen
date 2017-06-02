@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@android:color/black"
     tools:context="com.amagh.silverscreen.silverscreen.MovieDetailsActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -19,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             android:fitsSystemWindows="true"
+            android:background="@color/colorPrimary"
             app:expandedTitleTextAppearance="@style/Toolbar.TitleText"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
