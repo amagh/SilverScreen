@@ -1,9 +1,7 @@
 package com.amagh.silverscreen.silverscreen;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,14 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -30,12 +23,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private final boolean futureRelease = false;
 
     // Mem Vars
-    Movie mMovie;
-    ImageView mPosterImageView;
-    ImageView mBackdropImageView;
-    TextView mReleaseDateTextView;
-    TextView mRatingTextView;
-    TextView mOverviewTextView;
+    private Movie mMovie;
+    private ImageView mPosterImageView;
+    private ImageView mBackdropImageView;
+    private TextView mReleaseDateTextView;
+    private TextView mRatingTextView;
+    private TextView mOverviewTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

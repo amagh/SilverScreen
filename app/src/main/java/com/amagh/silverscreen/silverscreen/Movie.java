@@ -109,16 +109,8 @@ public class Movie implements Parcelable{
         this.backdropPath = backdropPath;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getVoteCount() {
-        return voteCount;
     }
 
     public void setVoteCount(int voteCount) {
