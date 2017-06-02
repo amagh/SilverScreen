@@ -164,7 +164,10 @@ public class MovieListActivity extends AppCompatActivity {
         private final String TMDB_POPULAR_PATH = "popular";
         private final String TMDB_TOP_RATED_PATH = "top_rated";
         private final String TMDB_API_QUERY = "api_key";
-        private final String TMDB_API_KEY = BuildConfig.API_KEY;
+
+        // Actually hidden in gradle.properties but not uploaded to GitHub because of the file is
+        // listed in .gitignore. Usually accessed as BuildConfig.API_KEY;
+        private final String TMDB_API_KEY = "17a5cf0827856fce7a4338aa74d86d11";
 
         // Mem Vars
         private URL mBuiltUrl;
