@@ -29,6 +29,7 @@ public class MovieContract {
         public static final String COLUMN_RELEASE_DATE = "release_date";
         public static final String COLUMN_POSTER_PATH = "poster_path";
         public static final String COLUMN_BACKDROP_PATH = "backdrop_path";
+        public static final String COLUMN_VOTE_COUNT = "vote_count";
         public static final String COLUMN_VOTE_AVG = "vote_average";
         public static final String COLUMN_SYNOPSIS = "synposis";
     }
