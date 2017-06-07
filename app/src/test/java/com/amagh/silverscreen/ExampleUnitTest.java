@@ -1,4 +1,4 @@
-package com.amagh.silverscreen.silverscreen;
+package com.amagh.silverscreen;
 
 import org.junit.Test;
 

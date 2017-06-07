@@ -1,4 +1,4 @@
-package com.amagh.silverscreen.silverscreen;
+package com.amagh.silverscreen;
 
 import android.os.Parcel;
 import android.os.Parcelable;

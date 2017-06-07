@@ -1,4 +1,4 @@
-package com.amagh.silverscreen.silverscreen;
+package com.amagh.silverscreen;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.amagh.silverscreen.silverscreen", appContext.getPackageName());
+        assertEquals("com.amagh.silverscreen", appContext.getPackageName());
     }
 }

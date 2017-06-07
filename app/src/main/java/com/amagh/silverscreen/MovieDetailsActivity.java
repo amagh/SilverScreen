@@ -1,4 +1,4 @@
-package com.amagh.silverscreen.silverscreen;
+package com.amagh.silverscreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.amagh.silverscreen.silverscreen.MovieDetailsActivity.EXTRAS.EXTRA_MOVIE;
+import static com.amagh.silverscreen.MovieDetailsActivity.EXTRAS.EXTRA_MOVIE;
 
 public class MovieDetailsActivity extends AppCompatActivity {
     // Constants

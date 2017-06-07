@@ -1,4 +1,4 @@
-package com.amagh.silverscreen.silverscreen;
+package com.amagh.silverscreen;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.amagh.silverscreen.silverscreen.MovieDetailsActivity.EXTRAS.EXTRA_MOVIE;
+import static com.amagh.silverscreen.MovieDetailsActivity.EXTRAS.EXTRA_MOVIE;
 
 public class MovieListActivity extends AppCompatActivity {
     // Constants
@@ -164,10 +164,11 @@ public class MovieListActivity extends AppCompatActivity {
         private final String TMDB_POPULAR_PATH = "popular";
         private final String TMDB_TOP_RATED_PATH = "top_rated";
         private final String TMDB_API_QUERY = "api_key";
+        // TODO #1: Replace API-Key Here
+        private final String TMDB_API_KEY = BuildConfig.API_KEY;
 
         // Actually hidden in gradle.properties but not uploaded to GitHub because of the file is
         // listed in .gitignore. Usually accessed as BuildConfig.API_KEY;
-        private final String TMDB_API_KEY = "17a5cf0827856fce7a4338aa74d86d11";
 
         // Mem Vars
         private URL mBuiltUrl;

@@ -1,4 +1,4 @@
-package com.amagh.silverscreen.silverscreen;
+package com.amagh.silverscreen;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
