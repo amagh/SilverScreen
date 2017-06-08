@@ -85,7 +85,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     }
 
     interface MovieClickHandler {
-        void onMovieClick(Uri movieUri);
+        void onMovieClick(int movieId);
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -110,14 +110,10 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
             // Retrieve the movieId for the clicked ViewHolder
             int position = getAdapterPosition();
             mCursor.moveToPosition(position);
-
-            // Create a URI utilizing the movieId
-            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI.buildUpon()
-                    .appendPath(mCursor.getString(MovieListActivity.IDX_MOVIE_ID))
-                    .build();
+            int movieId = mCursor.getInt(MovieListActivity.IDX_MOVIE_ID);
 
             // Pass the URI to the registered listener
-            mClickHandler.onMovieClick(movieUri);
+            mClickHandler.onMovieClick(movieId);
         }
     }
 }

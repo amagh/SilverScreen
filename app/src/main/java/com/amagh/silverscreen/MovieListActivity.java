@@ -148,9 +148,15 @@ public class MovieListActivity extends AppCompatActivity
 
     private final MovieAdapter.MovieClickHandler mMovieClickHandler = new MovieAdapter.MovieClickHandler() {
         @Override
-        public void onMovieClick(Uri movieUri) {
+        public void onMovieClick(int movieId) {
             // Build an explicit Intent to launch MovieDetailsActivity
             Intent intent = new Intent(MovieListActivity.this, MovieDetailsActivity.class);
+
+            // Create the URI for loading a linked movies and genres table
+            Uri movieUri = MovieContract.LinkGenresMovies.CONTENT_URI.buildUpon()
+                    .appendPath(MovieContract.PATH_MOVIES)
+                    .appendPath(Integer.toString(movieId))
+                    .build();
 
             // Add the URI for the movie to the Intent
             intent.setData(movieUri);
