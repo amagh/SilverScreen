@@ -123,4 +123,30 @@ public class TestDatabase {
     public void after() {
         context.deleteDatabase(mHelper.getDatabaseName());
     }
+
+    @Test
+    public void testQueryLinkedTables() {
+//        testInsertWithProvider();
+
+        Cursor cursor = context.getContentResolver().query(
+                LinkGenresMovies.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertTrue(cursor != null);
+
+        ContentValues linkGenreMovieValues = TestUtilities.createTestLinkContentValues();
+
+        String emptyCursorError = "Cursor for " + LinkGenresMovies.CONTENT_URI +
+                " returned no entries";
+        assertTrue(emptyCursorError, cursor.moveToFirst());
+
+        TestUtilities.validateCursorValues(cursor, linkGenreMovieValues);
+
+        String multipleEntryError = "Cursor returned more than one entry";
+        assertFalse(multipleEntryError, cursor.moveToNext());
+    }
 }
