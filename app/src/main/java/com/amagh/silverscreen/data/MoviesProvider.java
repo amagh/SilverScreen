@@ -429,6 +429,7 @@ public class MoviesProvider extends ContentProvider {
             db.endTransaction();
         }
 
+        getContext().getContentResolver().notifyChange(uri, null);
         return rowsInserted;
     }
 }
