@@ -64,9 +64,10 @@ public class MovieContract {
 
         // Columns
         public static final String COLUMN_TRAILER_ID        = "trailer_id";
-        public static final String COLUMN_KEY               = "key";
+        public static final String COLUMN_VIDEO_PATH        = "video_path";
         public static final String COLUMN_NAME              = "name";
         public static final String COLUMN_TYPE              = "type";
+        public static final String COLUMN_THUMBNAIL_PATH    = "thumbnail_path";
     }
 
     public static class LinkGenresMovies implements BaseColumns {
