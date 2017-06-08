@@ -1,11 +1,15 @@
 package com.amagh.silverscreen;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.amagh.silverscreen.data.MovieContract;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -15,11 +19,11 @@ import java.util.List;
  */
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    // Constants
+    // **Constants** //
     private final String TAG = MovieAdapter.class.getSimpleName();
 
-    // Mem Vars
-    private List<Movie> mMoviesList;
+    // **Mem Vars** //
+    private Cursor mCursor;
     private final MovieClickHandler mClickHandler;
     private int posterHeight = 0;
 
@@ -27,11 +31,14 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
         mClickHandler = clickHandler;
     }
 
-    void setMoviesList(List<Movie> movies) {
-        // Set the mem var
-        mMoviesList = movies;
+    void swapCursor(Cursor newCursor) {
+        // Set mem var to reference newCursor
+        mCursor = newCursor;
 
-        notifyDataSetChanged();
+        if (newCursor != null && newCursor.getCount() > 0) {
+            // If newCursor has count greater than zero, notify Adapter to change in data
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -53,12 +60,13 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
             holder.mPosterImageView.setLayoutParams(params);
         }
 
-        // Retrieve the Movie from the List
-        Movie movie = mMoviesList.get(position);
+        // Retrieve the movie information
+        mCursor.moveToPosition(position);
+        String posterPath = mCursor.getString(MovieListActivity.IDX_POSTER_PATH);
 
         // Load the poster image into the ViewHolder's ImageView
         Glide.with(holder.itemView.getContext())
-                .load(movie.getPosterPath())
+                .load(posterPath)
                 .into(holder.mPosterImageView);
 
         // Get the height that will be used to set the height of all ViewHolders' ImageViews
@@ -69,15 +77,15 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (mMoviesList != null) {
-            return mMoviesList.size();
+        if (mCursor != null) {
+            return mCursor.getCount();
         }
 
         return 0;
     }
 
     interface MovieClickHandler {
-        void onMovieClick(Movie movie);
+        void onMovieClick(Uri movieUri);
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -99,10 +107,17 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
         @Override
         public void onClick(View view) {
+            // Retrieve the movieId for the clicked ViewHolder
             int position = getAdapterPosition();
-            Movie movie = mMoviesList.get(position);
+            mCursor.moveToPosition(position);
 
-            mClickHandler.onMovieClick(movie);
+            // Create a URI utilizing the movieId
+            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI.buildUpon()
+                    .appendPath(mCursor.getString(MovieListActivity.IDX_MOVIE_ID))
+                    .build();
+
+            // Pass the URI to the registered listener
+            mClickHandler.onMovieClick(movieUri);
         }
     }
 }

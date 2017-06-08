@@ -12,12 +12,14 @@ import android.util.Log;
 import com.amagh.silverscreen.data.MovieContract;
 import com.amagh.silverscreen.data.MovieDbHelper;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 
+import static com.amagh.silverscreen.data.MovieContract.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -48,10 +50,10 @@ public class TestDatabase {
     @Test
     public void testCreateDb() {
         final HashSet<String> tableNames = new HashSet<>();
-        tableNames.add(MovieContract.MovieEntry.TABLE_NAME);
-        tableNames.add(MovieContract.GenreEntry.TABLE_NAME);
-        tableNames.add(MovieContract.TrailerEntry.TABLE_NAME);
-        tableNames.add(MovieContract.LinkGenresMovies.TABLE_NAME);
+        tableNames.add(MovieEntry.TABLE_NAME);
+        tableNames.add(GenreEntry.TABLE_NAME);
+        tableNames.add(TrailerEntry.TABLE_NAME);
+        tableNames.add(LinkGenresMovies.TABLE_NAME);
 
         String databaseNotOpenError = "Database not open";
         assertTrue(databaseNotOpenError, mDatabase.isOpen());
@@ -78,16 +80,16 @@ public class TestDatabase {
     @Test
     public void testInsertWithProvider() {
         ContentValues movieValues = TestUtilities.createTestMovieContentValues();
-        insertContentValues(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+        insertContentValues(MovieEntry.CONTENT_URI, movieValues);
 
         ContentValues genreValues = TestUtilities.createTestGenreContentValues();
-        insertContentValues(MovieContract.GenreEntry.CONTENT_URI, genreValues);
+        insertContentValues(GenreEntry.CONTENT_URI, genreValues);
 
         ContentValues trailerValues = TestUtilities.createTrailerContentValues();
-        insertContentValues(MovieContract.TrailerEntry.CONTENT_URI, trailerValues);
+        insertContentValues(TrailerEntry.CONTENT_URI, trailerValues);
 
         ContentValues linkGenreMoviesValues = TestUtilities.createTestLinkContentValues();
-        insertContentValues(MovieContract.LinkGenresMovies.CONTENT_URI, linkGenreMoviesValues);
+        insertContentValues(LinkGenresMovies.CONTENT_URI, linkGenreMoviesValues);
     }
 
     private void insertContentValues(Uri insertUri, ContentValues contentValues) {
@@ -115,5 +117,10 @@ public class TestDatabase {
         assertFalse(multipleEntryError, cursor.moveToNext());
 
         cursor.close();
+    }
+
+    @After
+    public void after() {
+        context.deleteDatabase(mHelper.getDatabaseName());
     }
 }

@@ -90,6 +90,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
     <string name="action_sort">Sort</string>
     <string name="format_release_date">Released: %s</string>
     <string name="format_rating">%.1f/10</string>
@@ -97,4 +98,10 @@
     <string name="dialog_sort_title">Sort by</string>
     <string name="dialog_popular">Most Popular</string>
     <string name="dialog_top_rated">Top Rated</string>
+
+    <!-- Preference Keys and Values -->
+    <string name="pref_sort_key" translatable="false">sort_method</string>
+    <string name="pref_sort_popularity" translatable="false">popular</string>
+    <string name="pref_sort_rating" translatable="false">top_rated</string>
+
 </resources>
