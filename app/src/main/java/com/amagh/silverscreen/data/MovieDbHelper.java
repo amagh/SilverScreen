@@ -42,11 +42,11 @@ public class MovieDbHelper extends SQLiteOpenHelper {
             GenreEntry.COLUMN_GENRE         + " TEXT NOT NULL);";
 
     private static final String CREATE_TRAILERS_TABLE =
-            "CREATE TABLE " + TrailerEntry.TABLE_NAME + "{ "                                    +
+            "CREATE TABLE " + TrailerEntry.TABLE_NAME + " ("                                    +
 
             TrailerEntry._ID                + " INTEGER PRIMARY KEY AUTOINCREMENT, "            +
             TrailerEntry.COLUMN_TRAILER_ID  + " INTEGER NOT NULL, "                             +
-            TrailerEntry.COLUMN_KEY         + " TEXT NOT NULL "                                 +
+            TrailerEntry.COLUMN_KEY         + " TEXT NOT NULL, "                                +
             TrailerEntry.COLUMN_NAME        + " TEXT, "                                         +
             TrailerEntry.COLUMN_TYPE        + " TEXT, "                                         +
             MovieEntry.COLUMN_MOVIE_ID      + " INTEGER NOT NULL, "                             +
@@ -58,7 +58,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     private static final String CREATE_LINK_GENRES_MOVIES_TABLE =
             "CREATE TABLE " + LinkGenresMovies.TABLE_NAME + " ("                                +
 
-            LinkGenresMovies._ID            + " INTEGER PRIMARY KEY AUTOINCREMENT "             +
+            LinkGenresMovies._ID            + " INTEGER PRIMARY KEY AUTOINCREMENT, "            +
             MovieEntry.COLUMN_MOVIE_ID      + " INTEGER NOT NULL, "                             +
             GenreEntry.COLUMN_GENRE_ID      + " INTEGER NOT NULL, "                             +
 
