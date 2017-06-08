@@ -1,67 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/activity_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.amagh.silverscreen.silverscreen.MovieDetailsActivity"
+    tools:context="com.amagh.silverscreen.MovieDetailsActivity"
     tools:showIn="@layout/activity_movie_details">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/movie_details_poster_iv"
-                android:layout_width="@dimen/detail_poster_width"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"/>
+                android:id="@+id/movie_info_background_iv"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                tools:background="@color/colorPrimary"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/movie_details_release_date_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_margin"
+                android:layout_marginLeft="@dimen/text_horizontal_margin"
+                android:layout_marginTop="@dimen/text_vertical_margin"
+                app:layout_constraintLeft_toLeftOf="@+id/movie_info_background_iv"
+                app:layout_constraintTop_toTopOf="@+id/movie_info_background_iv"
+                style="@style/OverlayText"
+                tools:text="May 23, 2017"
+                />
+
+            <TextView
+                android:id="@+id/movie_details_rating_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_vertical_margin"
+                android:layout_marginRight="@dimen/text_horizontal_margin"
+                app:layout_constraintTop_toTopOf="@+id/movie_info_background_iv"
+                app:layout_constraintRight_toRightOf="@+id/movie_info_background_iv"
+                style="@style/OverlayText"
+                tools:text="6.5/10"/>
+
+            <TextView
+                android:id="@+id/movie_details_genre_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/movie_details_release_date_tv"
+                app:layout_constraintLeft_toLeftOf="@+id/movie_details_release_date_tv"
+                style="@style/OverlayText"
+                android:fontFamily="sans-serif-light"
+                android:textSize="12sp"
+                tools:text="Action, Adventure, Fantasy, Comedy"/>
+
+            <ImageView
+                android:id="@+id/movie_details_poster_iv"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:layout_marginTop="@dimen/detail_poster_margin"
+                android:layout_marginLeft="@dimen/detail_poster_margin"
+                tools:src="@drawable/poster_placeholder"
+                app:layout_constraintTop_toBottomOf="@+id/movie_info_background_iv"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+
+            <TextView
+                android:id="@+id/movie_details_overview_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                tools:text="@string/large_text"
+                android:layout_marginTop="@dimen/text_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_margin"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="@dimen/activity_margin"
+                app:layout_constraintTop_toBottomOf="@+id/movie_details_poster_iv"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
-                <TextView
-                    android:id="@+id/movie_details_release_date_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    tools:text="10/15/2016"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/movie_details_trailers_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/movie_details_poster_iv"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/movie_details_poster_iv">
 
-                <TextView
-                    android:id="@+id/movie_details_ratings_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/text_margin"
-                    android:textColor="@android:color/white"
-                    tools:text="6.6/10"/>
+            </android.support.v7.widget.RecyclerView>
 
-            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/movie_details_overview_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin"
-            android:textColor="@android:color/white"
-            tools:text="@string/large_text"/>
-
-    </LinearLayout>
-
-
-
-</android.support.v4.widget.NestedScrollView>
+</layout>
