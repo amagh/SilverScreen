@@ -26,6 +26,7 @@
                 android:background="@color/colorPrimary"
                 app:expandedTitleTextAppearance="@style/Toolbar.TitleText"
                 app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginStart="@dimen/detail_toolbar_title_left_margin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -42,7 +43,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-
                     app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
             </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
@@ -51,6 +51,26 @@
         <include
             android:id="@+id/movie_details_content"
             layout="@layout/content_movie_details" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:fitsSystemWindows="true"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom">
+
+            <ImageView
+                android:id="@+id/movie_details_poster_top_iv"
+                android:layout_width="@dimen/detail_poster_width"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/poster_placeholder"/>
+        </FrameLayout>
+
+
 
         <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/fab"-->
