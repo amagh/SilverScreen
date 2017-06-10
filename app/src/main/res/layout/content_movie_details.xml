@@ -16,6 +16,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/movie_details_poster_bottom_iv"
+                android:layout_width="@dimen/detail_poster_width"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/poster_placeholder"
+                android:layout_marginStart="@dimen/activity_margin"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginTop="@dimen/activity_margin"
+                android:visibility="invisible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <TextView
                 android:id="@+id/movie_details_release_date_tv"
                 android:layout_width="0dp"
@@ -23,6 +37,7 @@
                 style="@style/OverlayText"
                 tools:text="May 23, 2017"
                 android:layout_marginLeft="@dimen/section_margin_horizontal"
+                android:layout_marginStart="@dimen/section_margin_horizontal"
                 app:layout_constraintLeft_toRightOf="@id/movie_details_poster_bottom_iv"
                 app:layout_constraintTop_toTopOf="@id/movie_details_poster_bottom_iv"
                 app:layout_constraintBottom_toTopOf="@+id/movie_details_genre_tv"
@@ -84,19 +99,7 @@
                     app:layout_constraintLeft_toLeftOf="@+id/movie_details_favorite_iv"/>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/movie_details_poster_bottom_iv"
-                android:layout_width="@dimen/detail_poster_width"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/poster_placeholder"
-                android:layout_marginStart="@dimen/activity_margin"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:visibility="invisible"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp" />
+
 
 
             <TextView

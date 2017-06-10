@@ -52,23 +52,18 @@
             android:id="@+id/movie_details_content"
             layout="@layout/content_movie_details" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/movie_details_poster_top_iv"
+            android:layout_width="@dimen/detail_poster_width"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginStart="@dimen/activity_margin"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
             android:layout_marginTop="96dp"
-            android:fitsSystemWindows="true"
             app:layout_anchor="@id/app_bar"
-            app:layout_anchorGravity="bottom">
-
-            <ImageView
-                android:id="@+id/movie_details_poster_top_iv"
-                android:layout_width="@dimen/detail_poster_width"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                tools:src="@drawable/poster_placeholder"/>
-        </FrameLayout>
+            app:layout_anchorGravity="bottom"
+            tools:src="@drawable/poster_placeholder"/>
 
 
 
