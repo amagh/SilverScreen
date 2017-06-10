@@ -34,4 +34,12 @@
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">3</item>
     </style>
+
+    <style name="SubheadText" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CaptionText" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>
