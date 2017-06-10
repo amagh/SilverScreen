@@ -11,7 +11,7 @@
 
         <ImageView
             android:id="@+id/list_trailer_thumb_iv"
-            android:layout_width="120dp"
+            android:layout_width="@dimen/list_item_trailer_thumbnail_width"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
@@ -37,6 +37,7 @@
             android:textColor="@android:color/white"
             tools:text="Trailer"
             android:gravity="center_horizontal"
+            style="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintTop_toBottomOf="@+id/list_trailer_thumb_iv"
             app:layout_constraintRight_toRightOf="@+id/list_trailer_thumb_iv"
             app:layout_constraintLeft_toLeftOf="@+id/list_trailer_thumb_iv" />

@@ -2,10 +2,16 @@
 <resources>
     <dimen name="detail_poster_width">100dp</dimen>
     <dimen name="detail_poster_margin">16dp</dimen>
+    <dimen name="detail_favorite_icon_size">24dp</dimen>
     <dimen name="detail_toolbar_title_left_margin">132dp</dimen>
 
     <dimen name="text_vertical_margin">8dp</dimen>
     <dimen name="text_horizontal_margin">16dp</dimen>
 
     <dimen name="activity_margin">16dp</dimen>
+
+    <dimen name="section_margin_horizontal">16dp</dimen>
+    <dimen name="section_margin_vertical">32dp</dimen>
+
+    <dimen name="list_item_trailer_thumbnail_width">120dp</dimen>
 </resources>
