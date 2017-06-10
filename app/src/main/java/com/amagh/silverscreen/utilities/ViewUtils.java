@@ -3,7 +3,9 @@ package com.amagh.silverscreen.utilities;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Window;
 
 /**
@@ -49,5 +51,15 @@ public class ViewUtils {
         // The StatusBar height will be the top margin of the Rect that is unusable because it is
         // reserved for the StatusBar
         return rectangle.top;
+    }
+
+    public static float calculatePosterTopMargin(Window window, Toolbar toolbar, float margin) {
+        float statusBarHeight = getStatusBarHeight(window);
+        Log.d("TEST", "StatusBar Height: " + statusBarHeight);
+        float toolbarHeight = toolbar.getHeight();
+        Log.d("TEST", "Toolbar Height: " + toolbarHeight);
+        float marginPx = convertDpToPixels(margin);
+        Log.d("TEST", "Margin in px: " + marginPx);
+        return statusBarHeight + toolbarHeight + marginPx;
     }
 }

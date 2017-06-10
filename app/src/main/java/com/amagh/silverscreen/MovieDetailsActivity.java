@@ -7,7 +7,9 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
@@ -19,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -81,7 +84,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
 
-    // Mem Vars
+    // **Member Variables** //
     ActivityMovieDetailsBinding mBinding;
     private Uri mUri;
     private String[] genres;
@@ -159,6 +162,9 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         // Set up the RecyclerView for the trailers of the movie
         setupTrailers();
+
+        // Set a Runnable to work after Views have been laid out so their heights can be calculated
+        mBinding.appBar.post(applyPosterMargin);
     }
 
     /**
@@ -219,8 +225,24 @@ public class MovieDetailsActivity extends AppCompatActivity
                 .load(backdropPath)
                 .into(mBinding.movieDetailsBackdropIv);
 
+
+
         mBinding.executePendingBindings();
     }
+
+    Runnable applyPosterMargin = new Runnable() {
+        @Override
+        public void run() {
+            // Retrieve the LayoutParams
+            CoordinatorLayout.LayoutParams params =
+                    (CoordinatorLayout.LayoutParams) mBinding.movieDetailsPosterTopIv.getLayoutParams();
+
+            // Calculate the top margin (Should be equal to 'StatusBar Height' + 'Toolbar Height' +
+            // 'Activity Margin'
+            params.setMargins((int) ViewUtils.convertDpToPixels(16), (int) ViewUtils.calculatePosterTopMargin(getWindow(), mBinding.toolbar, 16), 0, 0);
+            mBinding.movieDetailsPosterTopIv.setLayoutParams(params);
+        }
+    };
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
