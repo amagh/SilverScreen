@@ -36,6 +36,8 @@ public class TheMovieDBUtils {
     private static final String TMDB_GENRE_PATH = "genre";
     private static final String TMDB_LIST_PATH = "list";
 
+    private static final String TMDB_TRAILER_PATH = "videos";
+
     private static final String TMDB_API_QUERY = "api_key";
     // TODO: Replace API-Key Here
     private static final String TMDB_API_KEY = BuildConfig.API_KEY;
@@ -60,6 +62,14 @@ public class TheMovieDBUtils {
     private static final String JSON_NAME = "name";
 
     private static final String JSON_GENRE_ID_ARRAY = "genre_ids";
+
+    private static final String YT_VIDEOS_BASE_PATH = "https://www.youtube.com/watch?v=";
+    private static final String YT_THUMBNAIL_BASE_PATH = "https://img.youtube.com/vi/%s/hqdefault.jpg";
+
+    private static final String JSON_KEY = "key";
+    private static final String JSON_TYPE = "type";
+
+
 
     /**
      * Builds a URL directing to the TheMovieDB.org API for accessing popular or top-rated movie
@@ -99,6 +109,17 @@ public class TheMovieDBUtils {
                 .appendPath(TMDB_GENRE_PATH)
                 .appendPath(TMDB_MOVIE_PATH)
                 .appendPath(TMDB_LIST_PATH)
+                .appendQueryParameter(TMDB_API_QUERY, TMDB_API_KEY)
+                .build();
+
+        return new URL(builtUri.toString());
+    }
+
+    public static URL getTrailersURL(int movieId) throws MalformedURLException {
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendPath(TMDB_MOVIE_PATH)
+                .appendPath(Integer.toString(movieId))
+                .appendPath(TMDB_TRAILER_PATH)
                 .appendQueryParameter(TMDB_API_QUERY, TMDB_API_KEY)
                 .build();
 
@@ -262,5 +283,46 @@ public class TheMovieDBUtils {
         return movieGenreValues;
     }
 
+    /**
+     * Retrieve the information for all the trailers associated with a movie from TheMovieDB.org
+     * and build ContentValues to be inserted into the database.
+     *
+     * @param jsonResponse The String containg a JSONOBject describing the trailer information
+     * @return An Array of ContentValues to with trailer information to be inserted into the
+     * database
+     * @throws JSONException If there is an error converting the String to a JSONObject
+     */
+    public static ContentValues[] getTrailerContentValuesFromJson(String jsonResponse)
+            throws JSONException {
+        // Convert to JSONObject
+        JSONObject trailerJson = new JSONObject(jsonResponse);
 
+        // Retrieve the id of the movie contained in the JSONObject
+        int movieId = trailerJson.getInt(JSON_ID);
+
+        // Retrieve the JSONArray with all the trailer information
+        JSONArray trailerArray = trailerJson.getJSONArray(JSON_RESULTS_ARRAY);
+
+        // Init the Array of ContentValues to be returned
+        ContentValues[] trailerValues = new ContentValues[trailerArray.length()];
+
+        // Iterate, build the ContentValues, and add them to the Array
+        for (int i = 0; i < trailerArray.length(); i++) {
+            JSONObject trailerObject = trailerArray.getJSONObject(i);
+
+            String key = trailerObject.getString(JSON_KEY);
+
+            ContentValues trailerValue = new ContentValues();
+            trailerValue.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
+            trailerValue.put(TrailerEntry.COLUMN_TRAILER_ID, trailerObject.getString(JSON_ID));
+            trailerValue.put(TrailerEntry.COLUMN_VIDEO_PATH, YT_VIDEOS_BASE_PATH + key);
+            trailerValue.put(TrailerEntry.COLUMN_NAME, trailerObject.getString(JSON_NAME));
+            trailerValue.put(TrailerEntry.COLUMN_TYPE, trailerObject.getString(JSON_TYPE));
+            trailerValue.put(TrailerEntry.COLUMN_THUMBNAIL_PATH, String.format(YT_THUMBNAIL_BASE_PATH, key));
+
+            trailerValues[i] = trailerValue;
+        }
+
+        return trailerValues;
+    }
 }

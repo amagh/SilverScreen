@@ -64,7 +64,7 @@ public class TestUtilities {
     public static ContentValues createTrailerContentValues() {
         ContentValues value = new ContentValues();
         value.put(TrailerEntry.COLUMN_TRAILER_ID, 456);
-        value.put(TrailerEntry.COLUMN_KEY, "testKey");
+        value.put(TrailerEntry.COLUMN_VIDEO_PATH, "testKey");
         value.put(TrailerEntry.COLUMN_NAME, "Test Trailer");
         value.put(TrailerEntry.COLUMN_TYPE, "Trailer");
         value.put(MovieEntry.COLUMN_MOVIE_ID, 1);
