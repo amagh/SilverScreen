@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.amagh.silverscreen.databinding.ActivityMovieDetailsBinding;
+import com.amagh.silverscreen.sync.MovieReviewsSyncTask;
 import com.amagh.silverscreen.sync.MovieTrailersSyncTask;
 import com.amagh.silverscreen.utilities.MovieUtils;
 import com.amagh.silverscreen.utilities.ViewUtils;
@@ -29,7 +30,6 @@ public class MovieDetailsActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks {
     // **Constants** //
     private static final String TAG = MovieDetailsActivity.class.getSimpleName();
-    private static final boolean futureRelease = false;
 
     // Loader IDs
     private static final int MOVIE_DETAILS_LOADER = 6984;
@@ -92,6 +92,8 @@ public class MovieDetailsActivity extends AppCompatActivity
     private Uri mUri;
     private String[] genres;
     private TrailerAdapter mTrailerAdapter;
+    private boolean trailersLoaded = false;
+    private boolean reviewsLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,8 +307,38 @@ public class MovieDetailsActivity extends AppCompatActivity
                                 Integer.parseInt(mUri.getLastPathSegment())
                         );
 
+                        // Set boolean to prevent syncing trailers more than once in the case that
+                        // there are no trailers for the movie
+                        trailersLoaded = true;
                         return null;
                     }
+                };
+            }
+
+            case REVIEWS_SYNC_LOADER: {
+                return new AsyncTaskLoader<Void>(this) {
+                    @Override
+                    protected void onStartLoading() {
+                        super.onStartLoading();
+
+                        forceLoad();
+                    }
+
+                    @Override
+                    public Void loadInBackground() {
+                        // Load the reviews for the movie
+                        MovieReviewsSyncTask.syncTrailers(
+                                MovieDetailsActivity.this,
+                                Integer.parseInt(mUri.getLastPathSegment())
+                        );
+
+                        // Set boolean to prevent syncing reviews more than once in the case that
+                        // there are no reviews for the movie
+                        reviewsLoaded = true;
+                        return null;
+                    }
+
+
                 };
             }
 
@@ -354,7 +386,7 @@ public class MovieDetailsActivity extends AppCompatActivity
                 Cursor cursor = (Cursor) data;
 
                 // Check that trailers exists in the table
-                if (cursor == null || !cursor.moveToFirst()) {
+                if ((cursor == null || !cursor.moveToFirst()) && !trailersLoaded) {
                     // Trailer data has not been loaded. Start the AsyncTaskLoader to load the data
                     getSupportLoaderManager().initLoader(TRAILERS_SYNC_LOADER, null, this);
                 } else {
@@ -364,9 +396,31 @@ public class MovieDetailsActivity extends AppCompatActivity
                 break;
             }
 
+            case REVIEWS_LOADER: {
+                // Cast the data Object to a Cursor
+                Cursor cursor = (Cursor) data;
+
+                // Check that reviews exist in the table
+                if ((cursor == null || !cursor.moveToFirst()) && !reviewsLoaded) {
+                    // Review data has not been loaded. Start the AsyncTaskLoader to load the data
+                    getSupportLoaderManager().initLoader(REVIEWS_SYNC_LOADER, null, this);
+                } else {
+
+                }
+            }
+
             case TRAILERS_SYNC_LOADER: {
-                // Restart the CursorLoader for the Trailers because of a difference in URIs
+                // Restart the CursorLoader for the trailers because of a difference in URIs
                 getSupportLoaderManager().restartLoader(TRAILERS_LOADER, null, this);
+
+                break;
+            }
+
+            case REVIEWS_SYNC_LOADER: {
+                // Restart the CursorLoader for the reviews because of a difference in URIs
+                getSupportLoaderManager().restartLoader(REVIEWS_LOADER, null, this);
+
+                break;
             }
         }
     }
