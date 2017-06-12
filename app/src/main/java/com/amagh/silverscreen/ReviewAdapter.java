@@ -20,7 +20,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     // **Constants** //
 
     // **Member Variables** //
-    Cursor mCursor;
+    private Cursor mCursor;
 
     @Override
     public ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

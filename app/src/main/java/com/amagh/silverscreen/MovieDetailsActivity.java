@@ -89,9 +89,13 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     // **Member Variables** //
     ActivityMovieDetailsBinding mBinding;
+
     private Uri mUri;
     private String[] genres;
+
     private TrailerAdapter mTrailerAdapter;
+    private ReviewAdapter mReviewAdapter;
+
     private boolean trailersLoaded = false;
     private boolean reviewsLoaded = false;
 
@@ -168,6 +172,9 @@ public class MovieDetailsActivity extends AppCompatActivity
         // Set up the RecyclerView for the trailers of the movie
         setupTrailers();
 
+        // Set up the RecyclerView for the reviews of the movie
+        setupReviews();
+
         // Set a Runnable to work after Views have been laid out so their heights can be calculated
         mBinding.appBar.post(applyPosterMargin);
     }
@@ -187,6 +194,23 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         // Disable nested scrolling
         mBinding.movieDetailsContent.movieDetailsTrailersRv.setNestedScrollingEnabled(false);
+    }
+
+    /**
+     * Initialize mReviewAdapter and the LayoutManager for the RecyclerView showing reviews. Then
+     * the RecyclerView to use them.
+     */
+    private void setupReviews() {
+        // Init mReviewAdapter
+        mReviewAdapter = new ReviewAdapter();
+        mBinding.movieDetailsContent.movieDetailsReviewsRv.setAdapter(mReviewAdapter);
+
+        // Init LayoutManager
+        LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mBinding.movieDetailsContent.movieDetailsReviewsRv.setLayoutManager(llm);
+
+        // Disable nested scrolling
+        mBinding.movieDetailsContent.movieDetailsReviewsRv.setNestedScrollingEnabled(false);
     }
 
     /**
@@ -405,7 +429,7 @@ public class MovieDetailsActivity extends AppCompatActivity
                     // Review data has not been loaded. Start the AsyncTaskLoader to load the data
                     getSupportLoaderManager().initLoader(REVIEWS_SYNC_LOADER, null, this);
                 } else {
-
+                    mReviewAdapter.swapCursor(cursor);
                 }
             }
 
