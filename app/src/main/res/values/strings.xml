@@ -25,4 +25,22 @@
     <string name="movie_details_trailers_title">Trailers</string>
     <string name="movie_details_reviews_title">Reviews</string>
 
+    <!-- Reviews Tool Text -->
+    <string name="list_review_author_text">T. Author</string>
+    <string name="list_review_content_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Praesent iaculis magna nec erat mollis, rutrum porttitor justo pharetra. Lorem ipsum dolor
+        sit amet, consectetur adipiscing elit. Phasellus est est, consectetur ut pulvinar in, dictum
+        ut ipsum. Nullam eget neque tincidunt, gravida magna eu, convallis ligula. Vestibulum
+        scelerisque faucibus libero, in porttitor mi venenatis sit amet. Interdum et malesuada
+        fames ac ante ipsum primis in faucibus. Nam eget metus in ipsum molestie sagittis id vitae
+        nisi. Vestibulum non urna gravida nulla mattis suscipit.
+
+        \nQuisque quis nunc et lacus varius sodales. Duis eget justo sapien. Sed euismod sodales
+        tellus, non pharetra tortor dictum sit amet. Nullam molestie lectus a odio sollicitudin, eu
+        facilisis nisl maximus. Vivamus quis est a ex iaculis vehicula sit amet sed enim. In justo
+        orci, vulputate vitae dapibus sit amet, suscipit sit amet orci. Morbi rhoncus at dolor
+        blandit semper. Donec et bibendum lorem. Phasellus ornare ipsum quis massa scelerisque
+        elementum.
+    </string>
+
 </resources>
