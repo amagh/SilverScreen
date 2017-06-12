@@ -38,6 +38,8 @@ public class TheMovieDBUtils {
 
     private static final String TMDB_TRAILER_PATH = "videos";
 
+    private static final String TMDB_REVIEWS_PATH = "reviews";
+
     private static final String TMDB_API_QUERY = "api_key";
     // TODO: Replace API-Key Here
     private static final String TMDB_API_KEY = BuildConfig.API_KEY;
@@ -68,6 +70,9 @@ public class TheMovieDBUtils {
 
     private static final String JSON_KEY = "key";
     private static final String JSON_TYPE = "type";
+
+    private static final String JSON_AUTHOR = "author";
+    private static final String JSON_CONTENT = "content";
 
 
 
@@ -120,6 +125,17 @@ public class TheMovieDBUtils {
                 .appendPath(TMDB_MOVIE_PATH)
                 .appendPath(Integer.toString(movieId))
                 .appendPath(TMDB_TRAILER_PATH)
+                .appendQueryParameter(TMDB_API_QUERY, TMDB_API_KEY)
+                .build();
+
+        return new URL(builtUri.toString());
+    }
+
+    public static URL getReviewsURL(int movidId) throws MalformedURLException {
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendPath(TMDB_MOVIE_PATH)
+                .appendPath(Integer.toString(movidId))
+                .appendPath(TMDB_REVIEWS_PATH)
                 .appendQueryParameter(TMDB_API_QUERY, TMDB_API_KEY)
                 .build();
 
@@ -295,34 +311,59 @@ public class TheMovieDBUtils {
     public static ContentValues[] getTrailerContentValuesFromJson(String jsonResponse)
             throws JSONException {
         // Convert to JSONObject
-        JSONObject trailerJson = new JSONObject(jsonResponse);
+        JSONObject trailersJson = new JSONObject(jsonResponse);
 
         // Retrieve the id of the movie contained in the JSONObject
-        int movieId = trailerJson.getInt(JSON_ID);
+        int movieId = trailersJson.getInt(JSON_ID);
 
         // Retrieve the JSONArray with all the trailer information
-        JSONArray trailerArray = trailerJson.getJSONArray(JSON_RESULTS_ARRAY);
+        JSONArray trailersArray = trailersJson.getJSONArray(JSON_RESULTS_ARRAY);
 
         // Init the Array of ContentValues to be returned
-        ContentValues[] trailerValues = new ContentValues[trailerArray.length()];
+        ContentValues[] trailersValues = new ContentValues[trailersArray.length()];
 
         // Iterate, build the ContentValues, and add them to the Array
-        for (int i = 0; i < trailerArray.length(); i++) {
-            JSONObject trailerObject = trailerArray.getJSONObject(i);
+        for (int i = 0; i < trailersArray.length(); i++) {
+            JSONObject trailerObject = trailersArray.getJSONObject(i);
 
             String key = trailerObject.getString(JSON_KEY);
 
-            ContentValues trailerValue = new ContentValues();
-            trailerValue.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
-            trailerValue.put(TrailerEntry.COLUMN_TRAILER_ID, trailerObject.getString(JSON_ID));
-            trailerValue.put(TrailerEntry.COLUMN_VIDEO_PATH, YT_VIDEOS_BASE_PATH + key);
-            trailerValue.put(TrailerEntry.COLUMN_NAME, trailerObject.getString(JSON_NAME));
-            trailerValue.put(TrailerEntry.COLUMN_TYPE, trailerObject.getString(JSON_TYPE));
-            trailerValue.put(TrailerEntry.COLUMN_THUMBNAIL_PATH, String.format(YT_THUMBNAIL_BASE_PATH, key));
+            ContentValues trailerValues = new ContentValues();
+            trailerValues.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
+            trailerValues.put(TrailerEntry.COLUMN_TRAILER_ID, trailerObject.getString(JSON_ID));
+            trailerValues.put(TrailerEntry.COLUMN_VIDEO_PATH, YT_VIDEOS_BASE_PATH + key);
+            trailerValues.put(TrailerEntry.COLUMN_NAME, trailerObject.getString(JSON_NAME));
+            trailerValues.put(TrailerEntry.COLUMN_TYPE, trailerObject.getString(JSON_TYPE));
+            trailerValues.put(TrailerEntry.COLUMN_THUMBNAIL_PATH, String.format(YT_THUMBNAIL_BASE_PATH, key));
 
-            trailerValues[i] = trailerValue;
+            trailersValues[i] = trailerValues;
         }
 
-        return trailerValues;
+        return trailersValues;
+    }
+
+    public static ContentValues[] getReviewsContentValuesFromJson(String jsonResponse)
+            throws JSONException{
+        JSONObject reviewsJson = new JSONObject(jsonResponse);
+
+        int movieId = reviewsJson.getInt(JSON_ID);
+
+        JSONArray reviewsArray = reviewsJson.getJSONArray(JSON_RESULTS_ARRAY);
+
+        ContentValues[] reviewsValues = new ContentValues[reviewsArray.length()];
+
+        for (int i = 0; i < reviewsArray.length(); i++) {
+            JSONObject reviewObject = reviewsArray.getJSONObject(i);
+
+            ContentValues reviewValues = new ContentValues();
+            reviewValues.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
+            reviewValues.put(ReviewEntry.COLUMN_REVIEW_ID, reviewObject.getString(JSON_ID));
+            reviewValues.put(ReviewEntry.COLUMN_AUTHOR, reviewObject.getString(JSON_AUTHOR));
+            reviewValues.put(ReviewEntry.COLUMN_CONTENT, reviewObject.getString(JSON_CONTENT));
+
+            reviewsValues[i] = reviewValues;
+        }
+
+        return reviewsValues;
     }
 }
