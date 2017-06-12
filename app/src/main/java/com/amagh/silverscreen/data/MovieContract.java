@@ -15,7 +15,8 @@ public class MovieContract {
 
     public static final String PATH_MOVIES = "movies";
     public static final String PATH_GENRES = "genres";
-    public static final String PATH_TRAILERS = "trailer";
+    public static final String PATH_TRAILERS = "trailers";
+    public static final String PATH_REVIEWS = "reviews";
 
     public static final String PATH_LINK_GENRES_MOVIES = "link_genres_movies";
     public static final String PATH_LINK_TRAILERS_MOVIES = "link_trailers_movies";
@@ -68,6 +69,20 @@ public class MovieContract {
         public static final String COLUMN_NAME              = "name";
         public static final String COLUMN_TYPE              = "type";
         public static final String COLUMN_THUMBNAIL_PATH    = "thumbnail_path";
+    }
+
+    public static class ReviewEntry implements BaseColumns {
+        // ContentURI for accessing table information
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_REVIEWS).build();
+
+        // Table information
+        public static final String TABLE_NAME = "reviews";
+
+        // Columns
+        public static final String COLUMN_REVIEW_ID         = "review_id";
+        public static final String COLUMN_AUTHOR            = "author";
+        public static final String COLUMN_CONTENT           = "content";
     }
 
     public static class LinkGenresMovies implements BaseColumns {

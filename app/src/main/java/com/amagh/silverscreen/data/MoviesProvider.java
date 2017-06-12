@@ -36,9 +36,12 @@ public class MoviesProvider extends ContentProvider {
     public static final int CODE_TRAILERS = 300;
     public static final int CODE_TRAILERS_WITH_MOVIE_ID = 301;
 
-    public static final int CODE_LINK_GENRES_MOVIES = 400;
-    public static final int CODE_LINK_GENRES_MOVIES_WITH_MOVIE_ID = 401;
-    public static final int CODE_LINK_GENRES_MOVIES_WITH_GENRE_ID = 402;
+    public static final int CODE_REVIEWS = 400;
+    public static final int CODE_REVIEWS_WITH_MOVIE_ID = 401;
+
+    public static final int CODE_LINK_GENRES_MOVIES = 500;
+    public static final int CODE_LINK_GENRES_MOVIES_WITH_MOVIE_ID = 501;
+    public static final int CODE_LINK_GENRES_MOVIES_WITH_GENRE_ID = 502;
 
     // For utilizing the relational table to access movie and its genres
     public static final SQLiteQueryBuilder sMoviesAndGenresQueryBuilder;
@@ -77,6 +80,12 @@ public class MoviesProvider extends ContentProvider {
                 authority,
                 PATH_TRAILERS + "/" + PATH_MOVIES + "/#",
                 CODE_TRAILERS_WITH_MOVIE_ID
+        );
+
+        matcher.addURI(authority, PATH_REVIEWS, CODE_REVIEWS);
+        matcher.addURI(authority,
+                PATH_REVIEWS + "/" + PATH_MOVIES + "/#",
+                CODE_REVIEWS_WITH_MOVIE_ID
         );
 
         matcher.addURI(authority, PATH_LINK_GENRES_MOVIES, CODE_LINK_GENRES_MOVIES);
@@ -146,6 +155,18 @@ public class MoviesProvider extends ContentProvider {
 
             case CODE_TRAILERS_WITH_MOVIE_ID: {
                 tableName = TrailerEntry.TABLE_NAME;
+                selection = MovieEntry.COLUMN_MOVIE_ID + " = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
+                break;
+            }
+
+            case CODE_REVIEWS: {
+                tableName = ReviewEntry.TABLE_NAME;
+                break;
+            }
+
+            case CODE_REVIEWS_WITH_MOVIE_ID: {
+                tableName = ReviewEntry.TABLE_NAME;
                 selection = MovieEntry.COLUMN_MOVIE_ID + " = ?";
                 selectionArgs = new String[] {uri.getLastPathSegment()};
                 break;
@@ -246,6 +267,15 @@ public class MoviesProvider extends ContentProvider {
                 tableName = TrailerEntry.TABLE_NAME;
                 contentUri = TrailerEntry.CONTENT_URI.buildUpon()
                         .appendPath(MovieContract.PATH_MOVIES)
+                        .build();
+                id = contentValues.getAsInteger(MovieEntry.COLUMN_MOVIE_ID);
+                break;
+            }
+
+            case CODE_REVIEWS: {
+                tableName = ReviewEntry.TABLE_NAME;
+                contentUri = ReviewEntry.CONTENT_URI.buildUpon()
+                        .appendPath(PATH_MOVIES)
                         .build();
                 id = contentValues.getAsInteger(MovieEntry.COLUMN_MOVIE_ID);
                 break;
@@ -391,6 +421,11 @@ public class MoviesProvider extends ContentProvider {
 
             case CODE_TRAILERS: {
                 tableName = TrailerEntry.TABLE_NAME;
+                break;
+            }
+
+            case CODE_REVIEWS: {
+                tableName = ReviewEntry.TABLE_NAME;
                 break;
             }
 

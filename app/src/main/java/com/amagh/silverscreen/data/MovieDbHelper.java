@@ -55,6 +55,18 @@ public class MovieDbHelper extends SQLiteOpenHelper {
             "FOREIGN KEY (" + MovieEntry.COLUMN_MOVIE_ID + ") "                                 +
             "REFERENCES " + MovieEntry.TABLE_NAME + "(" + MovieEntry.COLUMN_MOVIE_ID + "));";
 
+    private static final String CREATE_REVIEWS_TABLE =
+            "CREATE TABLE "                     + ReviewEntry.TABLE_NAME + " ("                 +
+
+            ReviewEntry._ID                     + " INTEGER PRIMARY KEY AUTOINCREMENT, "        +
+            ReviewEntry.COLUMN_REVIEW_ID        + " TEXT NOT NULL, "                            +
+            ReviewEntry.COLUMN_AUTHOR           + " TEXT NOT NULL, "                            +
+            ReviewEntry.COLUMN_CONTENT          + " TEXT NOT NULL, "                            +
+            MovieEntry.COLUMN_MOVIE_ID          + " INTEGER NOT NULL, "                         +
+
+            "FOREIGN KEY (" + MovieEntry.COLUMN_MOVIE_ID + ") "                                 +
+            "REFERENCES " + MovieEntry.TABLE_NAME + "(" + MovieEntry.COLUMN_MOVIE_ID + "));";
+
 
     private static final String CREATE_LINK_GENRES_MOVIES_TABLE =
             "CREATE TABLE " + LinkGenresMovies.TABLE_NAME + " ("                                +
@@ -83,6 +95,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(CREATE_MOVIES_TABLE);
             sqLiteDatabase.execSQL(CREATE_GENRES_TABLE);
             sqLiteDatabase.execSQL(CREATE_TRAILERS_TABLE);
+            sqLiteDatabase.execSQL(CREATE_REVIEWS_TABLE);
             sqLiteDatabase.execSQL(CREATE_LINK_GENRES_MOVIES_TABLE);
 
             sqLiteDatabase.setTransactionSuccessful();

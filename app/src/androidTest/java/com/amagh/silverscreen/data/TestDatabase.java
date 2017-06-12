@@ -53,6 +53,7 @@ public class TestDatabase {
         tableNames.add(MovieEntry.TABLE_NAME);
         tableNames.add(GenreEntry.TABLE_NAME);
         tableNames.add(TrailerEntry.TABLE_NAME);
+        tableNames.add(ReviewEntry.TABLE_NAME);
         tableNames.add(LinkGenresMovies.TABLE_NAME);
 
         String databaseNotOpenError = "Database not open";
@@ -87,6 +88,9 @@ public class TestDatabase {
 
         ContentValues trailerValues = TestUtilities.createTrailerContentValues();
         insertContentValues(TrailerEntry.CONTENT_URI, trailerValues);
+
+        ContentValues reviewValues = TestUtilities.createReviewContentValues();
+        insertContentValues(ReviewEntry.CONTENT_URI, reviewValues);
 
         ContentValues linkGenreMoviesValues = TestUtilities.createTestLinkContentValues();
         insertContentValues(LinkGenresMovies.CONTENT_URI, linkGenreMoviesValues);

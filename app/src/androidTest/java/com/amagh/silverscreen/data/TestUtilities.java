@@ -65,8 +65,19 @@ public class TestUtilities {
         ContentValues value = new ContentValues();
         value.put(TrailerEntry.COLUMN_TRAILER_ID, 456);
         value.put(TrailerEntry.COLUMN_VIDEO_PATH, "testKey");
+        value.put(TrailerEntry.COLUMN_THUMBNAIL_PATH, "test://path");
         value.put(TrailerEntry.COLUMN_NAME, "Test Trailer");
         value.put(TrailerEntry.COLUMN_TYPE, "Trailer");
+        value.put(MovieEntry.COLUMN_MOVIE_ID, 1);
+
+        return value;
+    }
+
+    public static ContentValues createReviewContentValues() {
+        ContentValues value = new ContentValues();
+        value.put(ReviewEntry.COLUMN_REVIEW_ID, "test123id456");
+        value.put(ReviewEntry.COLUMN_AUTHOR, "reviewAuthorTest");
+        value.put(ReviewEntry.COLUMN_CONTENT, "Test Review Content");
         value.put(MovieEntry.COLUMN_MOVIE_ID, 1);
 
         return value;
