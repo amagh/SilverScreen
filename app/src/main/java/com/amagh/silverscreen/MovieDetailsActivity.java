@@ -13,6 +13,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -119,6 +121,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         // Begin loading movie details from database
         getSupportLoaderManager().initLoader(MOVIE_DETAILS_LOADER, null, this);
         getSupportLoaderManager().initLoader(TRAILERS_LOADER, null, this);
+        getSupportLoaderManager().initLoader(REVIEWS_LOADER, null, this);
 
         // Add a Listener to manage the animations of the favorite icon as the user scrolls
         mBinding.appBar.addOnOffsetChangedListener(new AppBarScrollListener(mBinding.movieDetailsPosterTopIv) {
@@ -208,6 +211,10 @@ public class MovieDetailsActivity extends AppCompatActivity
         // Init LayoutManager
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mBinding.movieDetailsContent.movieDetailsReviewsRv.setLayoutManager(llm);
+
+        // Init SnapHelper to ensure discrete scrolling
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(mBinding.movieDetailsContent.movieDetailsReviewsRv);
 
         // Disable nested scrolling
         mBinding.movieDetailsContent.movieDetailsReviewsRv.setNestedScrollingEnabled(false);
@@ -431,6 +438,8 @@ public class MovieDetailsActivity extends AppCompatActivity
                 } else {
                     mReviewAdapter.swapCursor(cursor);
                 }
+
+                break;
             }
 
             case TRAILERS_SYNC_LOADER: {
