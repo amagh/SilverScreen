@@ -25,6 +25,8 @@
     <string name="movie_details_trailers_title">Trailers</string>
     <string name="movie_details_reviews_title">Reviews</string>
 
+    <string name="list_review_continue_text">Click to continue reading full review…</string>
+
     <!-- Reviews Tool Text -->
     <string name="list_review_author_text">T. Author</string>
     <string name="list_review_content_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
