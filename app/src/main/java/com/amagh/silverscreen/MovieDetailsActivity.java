@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -16,16 +13,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.amagh.silverscreen.data.MovieContract;
 import com.amagh.silverscreen.databinding.ActivityMovieDetailsBinding;
 import com.amagh.silverscreen.sync.MovieTrailersSyncTask;
 import com.amagh.silverscreen.utilities.MovieUtils;
@@ -42,8 +33,10 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     // Loader IDs
     private static final int MOVIE_DETAILS_LOADER = 6984;
-    private static final int TRAILER_LOADER = 7531;
-    private static final int TRAILER_SYNC_LOADER = 2313;
+    private static final int TRAILERS_LOADER = 7531;
+    private static final int TRAILERS_SYNC_LOADER = 2313;
+    private static final int REVIEWS_LOADER = 6854;
+    private static final int REVIEWS_SYNC_LOADER = 7887;
 
     // Column Projection
     public static final String[] DETAILS_PROJECTION = new String[] {
@@ -68,7 +61,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     private static final int IDX_MOVIE_GENRE_ID             = 7;
     private static final int IDX_MOVIE_GENRE                = 8;
 
-    public static final String[] TRAILER_PROJECTION = new String[] {
+    public static final String[] TRAILERS_PROJECTION = new String[] {
             MovieEntry.COLUMN_MOVIE_ID,
             TrailerEntry.COLUMN_NAME,
             TrailerEntry.COLUMN_TYPE,
@@ -83,6 +76,16 @@ public class MovieDetailsActivity extends AppCompatActivity
         int IDX_TRAILER_THUMBNAIL_PATH                      = 4;
     }
 
+    public static final String[] REVIEWS_PROJECTION = new String[] {
+            MovieEntry.COLUMN_MOVIE_ID,
+            ReviewEntry.COLUMN_AUTHOR,
+            ReviewEntry.COLUMN_CONTENT
+    };
+
+    public interface REVIEWS_INDEX {
+        int IDX_REVIEW_AUTHOR                               = 1;
+        int IDX_REVIEW_CONTENT                              = 2;
+    }
 
     // **Member Variables** //
     ActivityMovieDetailsBinding mBinding;
@@ -109,7 +112,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         // Begin loading movie details from database
         getSupportLoaderManager().initLoader(MOVIE_DETAILS_LOADER, null, this);
-        getSupportLoaderManager().initLoader(TRAILER_LOADER, null, this);
+        getSupportLoaderManager().initLoader(TRAILERS_LOADER, null, this);
 
         // Add a Listener to manage the animations of the favorite icon as the user scrolls
         mBinding.appBar.addOnOffsetChangedListener(new AppBarScrollListener(mBinding.movieDetailsPosterTopIv) {
@@ -261,7 +264,7 @@ public class MovieDetailsActivity extends AppCompatActivity
                 break;
             }
 
-            case TRAILER_LOADER: {
+            case TRAILERS_LOADER: {
                 // Retrieve the movieId and build the URI to load its trailers
                 String movieIdString = mUri.getLastPathSegment();
                 uri = TrailerEntry.CONTENT_URI.buildUpon()
@@ -269,11 +272,23 @@ public class MovieDetailsActivity extends AppCompatActivity
                         .appendPath(movieIdString)
                         .build();
 
-                projection = TRAILER_PROJECTION;
+                projection = TRAILERS_PROJECTION;
                 break;
             }
 
-            case TRAILER_SYNC_LOADER: {
+            case REVIEWS_LOADER: {
+                // Retrieve the movieId and build the URI to load its reviews
+                String movieIdString = mUri.getLastPathSegment();
+                uri = ReviewEntry.CONTENT_URI.buildUpon()
+                        .appendPath(PATH_MOVIES)
+                        .appendPath(movieIdString)
+                        .build();
+
+                projection = REVIEWS_PROJECTION;
+                break;
+            }
+
+            case TRAILERS_SYNC_LOADER: {
                 return new AsyncTaskLoader<Void>(this) {
                     @Override
                     protected void onStartLoading() {
@@ -334,14 +349,14 @@ public class MovieDetailsActivity extends AppCompatActivity
                 break;
             }
 
-            case TRAILER_LOADER: {
+            case TRAILERS_LOADER: {
                 // Cast the data Object to a Cursor
                 Cursor cursor = (Cursor) data;
 
                 // Check that trailers exists in the table
                 if (cursor == null || !cursor.moveToFirst()) {
                     // Trailer data has not been loaded. Start the AsyncTaskLoader to load the data
-                    getSupportLoaderManager().initLoader(TRAILER_SYNC_LOADER, null, this);
+                    getSupportLoaderManager().initLoader(TRAILERS_SYNC_LOADER, null, this);
                 } else {
                     mTrailerAdapter.swapCursor(cursor);
                 }
@@ -349,9 +364,9 @@ public class MovieDetailsActivity extends AppCompatActivity
                 break;
             }
 
-            case TRAILER_SYNC_LOADER: {
+            case TRAILERS_SYNC_LOADER: {
                 // Restart the CursorLoader for the Trailers because of a difference in URIs
-                getSupportLoaderManager().restartLoader(TRAILER_LOADER, null, this);
+                getSupportLoaderManager().restartLoader(TRAILERS_LOADER, null, this);
             }
         }
     }
