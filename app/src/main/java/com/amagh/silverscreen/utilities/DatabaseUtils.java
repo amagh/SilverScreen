@@ -7,6 +7,7 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.amagh.silverscreen.data.MovieContract;
@@ -30,7 +31,7 @@ public class DatabaseUtils {
      * @param context Interface to global Context
      * @return true if genre table contains rows, false otherwise
      */
-    public static boolean genreTableExists(Context context) {
+    public static boolean genreTableExists(@NonNull Context context) {
         // Query database for genre table
         Cursor cursor = context.getContentResolver().query(
                 GenreEntry.CONTENT_URI,
@@ -87,7 +88,7 @@ public class DatabaseUtils {
      * @param context   Interface to global Context
      * @param values    Array of ContentValues describing movie information
      */
-    public static void updateAndInsertMovieValues(Context context, ContentValues[] values) {
+    public static void updateAndInsertMovieValues(@NonNull Context context, ContentValues[] values) {
         // Lists to hold ContentValues to insert and ContentProviderOperations for movies that are
         // already in table
         List<ContentValues> insertList = new ArrayList<>();
@@ -169,7 +170,7 @@ public class DatabaseUtils {
      * @param movieId   The id supplied utilized by TheMovieDB.org to identify movies
      * @return true if movieId exists in database, false if it does not
      */
-    public static boolean movieInLinkGenreMovieTable(Context context, int movieId) {
+    public static boolean movieInLinkGenreMovieTable(@NonNull Context context, int movieId) {
         // Build URI for querying database
         Uri linkUri = LinkGenresMovies.CONTENT_URI.buildUpon()
                 .appendPath(PATH_MOVIES)
@@ -197,5 +198,52 @@ public class DatabaseUtils {
 
         // Return false if Cursor is not valid
         return false;
+    }
+
+    /**
+     * Toggles the favorite status of a movie in the database.
+     *
+     * @param context   Interface to global Context
+     * @param movieId   ID of the movie to be altered
+     * @return The boolean value of the favorite status of the movie after it has been altered
+     */
+    public static boolean toggleFavoriteStatus (@NonNull Context context, int movieId) {
+        // Build the URI for the movieId
+        Uri movieUri = MovieEntry.CONTENT_URI.buildUpon()
+                .appendPath(Integer.toString(movieId))
+                .build();
+
+        // Query the database to check the current favorite status of the movie
+        Cursor cursor = context.getContentResolver().query(
+                movieUri,
+                new String[] {MovieEntry.COLUMN_FAVORITE},
+                null,
+                null,
+                null
+        );
+
+        // Init the boolean
+        boolean favorite = false;
+
+        // Set favorite to the movie's favorite status
+        if (cursor != null) {
+            favorite = cursor.moveToFirst() && cursor.getInt(0) == 1;
+
+            // Close the Cursor
+            cursor.close();
+        }
+
+        // Create the ContentValues to update the movie values
+        ContentValues values = new ContentValues();
+        values.put(MovieEntry.COLUMN_FAVORITE, favorite ? 0 : 1);
+
+        context.getContentResolver().update(
+                movieUri,
+                values,
+                null,
+                null
+        );
+
+        return !favorite;
     }
 }

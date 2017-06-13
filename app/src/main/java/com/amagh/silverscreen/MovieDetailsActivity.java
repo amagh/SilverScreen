@@ -22,6 +22,7 @@ import android.view.View;
 import com.amagh.silverscreen.databinding.ActivityMovieDetailsBinding;
 import com.amagh.silverscreen.sync.MovieReviewsSyncTask;
 import com.amagh.silverscreen.sync.MovieTrailersSyncTask;
+import com.amagh.silverscreen.utilities.DatabaseUtils;
 import com.amagh.silverscreen.utilities.MovieUtils;
 import com.amagh.silverscreen.utilities.ViewUtils;
 import com.bumptech.glide.Glide;
@@ -52,6 +53,7 @@ public class MovieDetailsActivity extends AppCompatActivity
             MovieEntry.COLUMN_BACKDROP_PATH,
             MovieEntry.COLUMN_VOTE_AVG,
             MovieEntry.COLUMN_SYNOPSIS,
+            MovieEntry.COLUMN_FAVORITE,
             GenreEntry.TABLE_NAME + "." + GenreEntry.COLUMN_GENRE_ID,
             GenreEntry.COLUMN_GENRE
     };
@@ -63,8 +65,9 @@ public class MovieDetailsActivity extends AppCompatActivity
     private static final int IDX_MOVIE_BACKDROP_PATH        = 4;
     private static final int IDX_MOVIE_VOTE_AVG             = 5;
     private static final int IDX_MOVIE_SYNPOSIS             = 6;
-    private static final int IDX_MOVIE_GENRE_ID             = 7;
-    private static final int IDX_MOVIE_GENRE                = 8;
+    private static final int IDX_MOVIE_FAVORITE             = 7;
+    private static final int IDX_MOVIE_GENRE_ID             = 8;
+    private static final int IDX_MOVIE_GENRE                = 9;
 
     public static final String[] TRAILERS_PROJECTION = new String[] {
             MovieEntry.COLUMN_MOVIE_ID,
@@ -98,6 +101,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     ActivityMovieDetailsBinding mBinding;
 
     private Uri mUri;
+    private int mMovieId;
     private String[] genres;
 
     private TrailerAdapter mTrailerAdapter;
@@ -289,6 +293,20 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
     }
 
+    public void toggleFavorite(View view) {
+        boolean favorite = DatabaseUtils.toggleFavoriteStatus(this, mMovieId);
+
+        setFavoriteIcon(favorite);
+    }
+
+    private void setFavoriteIcon(boolean favorite) {
+        if (favorite) {
+            mBinding.movieDetailsContent.movieDetailsFavoriteIv.setImageResource(R.drawable.ic_favorite);
+        } else {
+            mBinding.movieDetailsContent.movieDetailsFavoriteIv.setImageResource(R.drawable.ic_favorite_border);
+        }
+    }
+
     /**
      * Use DataBinding feature to set the movie information to the Views
      *
@@ -296,10 +314,12 @@ public class MovieDetailsActivity extends AppCompatActivity
      */
     private void bindData(Cursor cursor) {
         // Retrieve the movie information
+        mMovieId = cursor.getInt(IDX_MOVIE_ID);
         String movieTitle = cursor.getString(IDX_MOVITE_TITLE);
         String releaseDate = MovieUtils.formatDate(cursor.getString(IDX_MOVIE_RELEASE_DATE));
         String voteAverage = getString(R.string.format_rating, cursor.getDouble(IDX_MOVIE_VOTE_AVG));
         String synopsis = cursor.getString(IDX_MOVIE_SYNPOSIS);
+        boolean favorite = cursor.getInt(IDX_MOVIE_FAVORITE) == 1;
 
         // Retrieve paths for images associated with the movie
         String posterPath = cursor.getString(IDX_MOVIE_POSTER_PATH);
@@ -316,6 +336,8 @@ public class MovieDetailsActivity extends AppCompatActivity
         mBinding.movieDetailsContent.movieDetailsRatingTv.setText(voteAverage);
         mBinding.movieDetailsContent.movieDetailsOverviewTv.setText(synopsis);
         mBinding.movieDetailsContent.movieDetailsGenreTv.setText(genresString);
+
+        setFavoriteIcon(favorite);
 
         // Load the images
         Glide.with(this)

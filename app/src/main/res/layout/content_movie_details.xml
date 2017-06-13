@@ -73,6 +73,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="32dp"
+                android:onClick="toggleFavorite"
                 app:layout_constraintTop_toBottomOf="@+id/movie_details_genre_tv"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
