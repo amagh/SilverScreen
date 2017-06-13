@@ -535,8 +535,6 @@ public class MovieDetailsActivity extends AppCompatActivity
                     // Show the trailer associated Views if there are trailers to display
                     mBinding.movieDetailsContent.movieDetailsTrailersRv.setVisibility(View.VISIBLE);
                     mBinding.movieDetailsContent.movieDetailsTrailersTitleTv.setVisibility(View.VISIBLE);
-                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.VISIBLE);
-                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.VISIBLE);
                 }
 
                 break;
@@ -556,6 +554,8 @@ public class MovieDetailsActivity extends AppCompatActivity
                     // Hide the reviews associated Views if there are no reviews to display
                     mBinding.movieDetailsContent.movieDetailsReviewsRv.setVisibility(View.VISIBLE);
                     mBinding.movieDetailsContent.movieDetailsReviewsTitleTv.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.VISIBLE);
                 }
 
                 break;
