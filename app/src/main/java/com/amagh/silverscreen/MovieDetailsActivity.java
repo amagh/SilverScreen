@@ -40,6 +40,9 @@ public class MovieDetailsActivity extends AppCompatActivity
     private static final int REVIEWS_LOADER = 6854;
     private static final int REVIEWS_SYNC_LOADER = 7887;
 
+    // Dialog TAG
+    private static final String REVIEW_DIALOG = "review_dialog";
+
     // Column Projection
     public static final String[] DETAILS_PROJECTION = new String[] {
             MovieEntry.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID,
@@ -81,12 +84,14 @@ public class MovieDetailsActivity extends AppCompatActivity
     public static final String[] REVIEWS_PROJECTION = new String[] {
             MovieEntry.COLUMN_MOVIE_ID,
             ReviewEntry.COLUMN_AUTHOR,
-            ReviewEntry.COLUMN_CONTENT
+            ReviewEntry.COLUMN_CONTENT,
+            ReviewEntry.COLUMN_REVIEW_ID
     };
 
     public interface REVIEWS_INDEX {
         int IDX_REVIEW_AUTHOR                               = 1;
         int IDX_REVIEW_CONTENT                              = 2;
+        int IDX_REVIEW_ID                                   = 3;
     }
 
     // **Member Variables** //
@@ -209,7 +214,7 @@ public class MovieDetailsActivity extends AppCompatActivity
      */
     private void setupReviews() {
         // Init mReviewAdapter
-        mReviewAdapter = new ReviewAdapter();
+        mReviewAdapter = new ReviewAdapter(reviewClickHandler);
         mBinding.movieDetailsContent.movieDetailsReviewsRv.setAdapter(mReviewAdapter);
 
         // Init LayoutManager
@@ -239,17 +244,17 @@ public class MovieDetailsActivity extends AppCompatActivity
                 // Show/hide the visibility of the chevrons depending on the relative position of
                 // visible review item
                 if (mReviewCount == 1) {
-                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.INVISIBLE);
-                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.INVISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.INVISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.INVISIBLE);
                 } else if (position > 0 && position < mReviewCount - 1){
-                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.VISIBLE);
-                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.VISIBLE);
                 } else if (position == 0) {
-                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.INVISIBLE);
-                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.INVISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.VISIBLE);
                 } else if (position == mReviewCount - 1) {
-                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.VISIBLE);
-                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.INVISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -343,6 +348,23 @@ public class MovieDetailsActivity extends AppCompatActivity
             mBinding.movieDetailsPosterTopIv.setLayoutParams(params);
         }
     };
+
+    ReviewAdapter.ReviewClickHandler reviewClickHandler = new ReviewAdapter.ReviewClickHandler() {
+        @Override
+        public void onClickReview(String reviewId) {
+            Uri reviewUri = ReviewEntry.CONTENT_URI.buildUpon()
+                    .appendPath(reviewId)
+                    .build();
+
+            showReviewDialog(reviewUri);
+        }
+    };
+
+    private void showReviewDialog(Uri reviewUri) {
+        ReviewDialog dialog = new ReviewDialog();
+        dialog.setData(reviewUri);
+        dialog.show(getFragmentManager(), REVIEW_DIALOG);
+    }
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
@@ -484,12 +506,14 @@ public class MovieDetailsActivity extends AppCompatActivity
                 if ((cursor == null || !cursor.moveToFirst()) && !trailersLoaded) {
                     // Trailer data has not been loaded. Start the AsyncTaskLoader to load the data
                     getSupportLoaderManager().initLoader(TRAILERS_SYNC_LOADER, null, this);
-                } else if (cursor == null || !cursor.moveToFirst()) {
-                    // Hide the trailer associated Views if there are no trailers to display
-                    mBinding.movieDetailsContent.movieDetailsTrailersRv.setVisibility(View.GONE);
-                    mBinding.movieDetailsContent.movieDetailsTrailersTitleTv.setVisibility(View.GONE);
-                } else {
+                } else if (cursor != null && cursor.moveToFirst()) {
                     mTrailerAdapter.swapCursor(cursor);
+
+                    // Show the trailer associated Views if there are trailers to display
+                    mBinding.movieDetailsContent.movieDetailsTrailersRv.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsTrailersTitleTv.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewLeftChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewRightChevron.setVisibility(View.VISIBLE);
                 }
 
                 break;
@@ -503,12 +527,12 @@ public class MovieDetailsActivity extends AppCompatActivity
                 if ((cursor == null || !cursor.moveToFirst()) && !reviewsLoaded) {
                     // Review data has not been loaded. Start the AsyncTaskLoader to load the data
                     getSupportLoaderManager().initLoader(REVIEWS_SYNC_LOADER, null, this);
-                } else if (cursor == null || !cursor.moveToFirst()) {
-                    // Hide the reviews associated Views if there are no reviews to display
-                    mBinding.movieDetailsContent.movieDetailsReviewsRv.setVisibility(View.GONE);
-                    mBinding.movieDetailsContent.movieDetailsReviewsTitleTv.setVisibility(View.GONE);
-                } else {
+                } else if (cursor != null && cursor.moveToFirst()) {
                     mReviewAdapter.swapCursor(cursor);
+
+                    // Hide the reviews associated Views if there are no reviews to display
+                    mBinding.movieDetailsContent.movieDetailsReviewsRv.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.movieDetailsReviewsTitleTv.setVisibility(View.VISIBLE);
                 }
 
                 break;

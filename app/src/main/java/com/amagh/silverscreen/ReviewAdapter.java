@@ -4,12 +4,14 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.amagh.silverscreen.databinding.ListItemReviewBinding;
 
 import static com.amagh.silverscreen.MovieDetailsActivity.REVIEWS_INDEX.IDX_REVIEW_AUTHOR;
 import static com.amagh.silverscreen.MovieDetailsActivity.REVIEWS_INDEX.IDX_REVIEW_CONTENT;
+import static com.amagh.silverscreen.MovieDetailsActivity.REVIEWS_INDEX.IDX_REVIEW_ID;
 
 /**
  * Created by hnoct on 6/12/2017.
@@ -20,6 +22,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     // **Member Variables** //
     private Cursor mCursor;
+    private ReviewClickHandler mReviewClickHandler;
+
+    public ReviewAdapter(ReviewClickHandler reviewClickHandler) {
+        mReviewClickHandler = reviewClickHandler;
+    }
 
     @Override
     public ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -64,12 +71,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         }
     }
 
-    public class ReviewViewHolder extends RecyclerView.ViewHolder {
+    public interface ReviewClickHandler {
+        void onClickReview(String reviewId);
+    }
+
+    public class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ListItemReviewBinding mBinding;
 
         public ReviewViewHolder(ListItemReviewBinding binding) {
             super(binding.getRoot());
 
+            binding.getRoot().setOnClickListener(this);
             mBinding = binding;
         }
 
@@ -87,6 +99,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
             // Force data to bind immediately
             mBinding.executePendingBindings();
+        }
+
+        @Override
+        public void onClick(View view) {
+            // Get the Id of the review clicked
+            int position = getAdapterPosition();
+            mCursor.moveToPosition(position);
+
+            String reviewId= mCursor.getString(IDX_REVIEW_ID);
+
+            mReviewClickHandler.onClickReview(reviewId);
         }
     }
 }

@@ -38,6 +38,7 @@ public class MoviesProvider extends ContentProvider {
 
     public static final int CODE_REVIEWS = 400;
     public static final int CODE_REVIEWS_WITH_MOVIE_ID = 401;
+    public static final int CODE_REVIEWS_WITH_ID = 402;
 
     public static final int CODE_LINK_GENRES_MOVIES = 500;
     public static final int CODE_LINK_GENRES_MOVIES_WITH_MOVIE_ID = 501;
@@ -87,6 +88,11 @@ public class MoviesProvider extends ContentProvider {
                 PATH_REVIEWS + "/" + PATH_MOVIES + "/#",
                 CODE_REVIEWS_WITH_MOVIE_ID
         );
+        matcher.addURI(authority,
+                PATH_REVIEWS + "/*",
+                CODE_REVIEWS_WITH_ID
+        );
+
 
         matcher.addURI(authority, PATH_LINK_GENRES_MOVIES, CODE_LINK_GENRES_MOVIES);
         matcher.addURI(
@@ -162,6 +168,13 @@ public class MoviesProvider extends ContentProvider {
 
             case CODE_REVIEWS: {
                 tableName = ReviewEntry.TABLE_NAME;
+                break;
+            }
+
+            case CODE_REVIEWS_WITH_ID: {
+                tableName = ReviewEntry.TABLE_NAME;
+                selection = ReviewEntry.COLUMN_REVIEW_ID + " = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
                 break;
             }
 
