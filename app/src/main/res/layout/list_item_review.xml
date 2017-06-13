@@ -7,10 +7,10 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/detail_review_chevron_icon_size"
-        android:paddingStart="@dimen/detail_review_chevron_icon_size"
-        android:paddingRight="@dimen/detail_review_chevron_icon_size"
-        android:paddingEnd="@dimen/detail_review_chevron_icon_size"
+        android:layout_marginLeft="@dimen/detail_review_chevron_icon_size"
+        android:layout_marginStart="@dimen/detail_review_chevron_icon_size"
+        android:layout_marginRight="@dimen/detail_review_chevron_icon_size"
+        android:layout_marginEnd="@dimen/detail_review_chevron_icon_size"
         tools:background="@android:color/black">
 
         <TextView
