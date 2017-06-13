@@ -1,6 +1,7 @@
 package com.amagh.silverscreen;
 
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.amagh.silverscreen.data.MovieContract;
+import com.amagh.silverscreen.databinding.ListItemMovieBinding;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -45,34 +47,14 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Init the LayoutInflater and inflate the list item layout
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_movie, parent, false);
+        ListItemMovieBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_item_movie, parent, false);
 
-        return new MovieViewHolder(view);
+        return new MovieViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        // Set the height of the ViewHolder's ImageView
-        if (posterHeight != 0) {
-            ViewGroup.LayoutParams params = holder.mPosterImageView.getLayoutParams();
-            params.height = posterHeight;
-
-            holder.mPosterImageView.setLayoutParams(params);
-        }
-
-        // Retrieve the movie information
-        mCursor.moveToPosition(position);
-        String posterPath = mCursor.getString(MovieListActivity.IDX_POSTER_PATH);
-
-        // Load the poster image into the ViewHolder's ImageView
-        Glide.with(holder.itemView.getContext())
-                .load(posterPath)
-                .into(holder.mPosterImageView);
-
-        // Get the height that will be used to set the height of all ViewHolders' ImageViews
-        if (posterHeight == 0) {
-            posterHeight = holder.mPosterImageView.getHeight();
-        }
+        holder.bind(mCursor);
     }
 
     @Override
@@ -90,19 +72,14 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Mem Vars
-        private final ImageView mPosterImageView;
-//        private final TextView mRatingTextView;
-//        private final TextView mReviewsTextView;
+        private ListItemMovieBinding mBinding;
 
-        MovieViewHolder(View view) {
-            super(view);
+        MovieViewHolder(ListItemMovieBinding binding) {
+            super(binding.getRoot());
 
-            // Obtain references to the respective Views
-            mPosterImageView = (ImageView) view.findViewById(R.id.movie_item_poster_iv);
-//            mRatingTextView = (TextView) view.findViewById(R.id.movie_item_rating_tv);
-//            mReviewsTextView = (TextView) view.findViewById(R.id.movie_item_review_tv);
+            binding.getRoot().setOnClickListener(this);
 
-            view.setOnClickListener(this);
+            mBinding = binding;
         }
 
         @Override
@@ -114,6 +91,35 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
             // Pass the URI to the registered listener
             mClickHandler.onMovieClick(movieId);
+        }
+
+        /**
+         * Bind data to Views
+         */
+        private void bind(Cursor cursor) {
+            // Set the height of the ViewHolder's ImageView
+            if (posterHeight != 0) {
+                ViewGroup.LayoutParams params = mBinding.movieItemPosterIv.getLayoutParams();
+                params.height = posterHeight;
+
+                mBinding.movieItemPosterIv.setLayoutParams(params);
+            }
+
+            // Retrieve the poster location
+            int position = getAdapterPosition();
+            cursor.moveToPosition(position);
+
+            String posterPath = cursor.getString(MovieListActivity.IDX_POSTER_PATH);
+
+            // Bind the data to the View
+            Glide.with(mBinding.getRoot().getContext())
+                    .load(posterPath)
+                    .into(mBinding.movieItemPosterIv);
+
+            // Get the height that will be used to set the height of all ViewHolders' ImageViews
+            if (posterHeight == 0) {
+                posterHeight = mBinding.movieItemPosterIv.getHeight();
+            }
         }
     }
 }
