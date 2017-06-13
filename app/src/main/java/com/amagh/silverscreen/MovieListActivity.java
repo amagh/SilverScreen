@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 
 import com.amagh.silverscreen.data.MovieContract;
+import com.amagh.silverscreen.sync.MovieSyncIntentService;
 import com.amagh.silverscreen.sync.MovieSyncUtils;
 
 public class MovieListActivity extends AppCompatActivity
@@ -124,16 +125,31 @@ public class MovieListActivity extends AppCompatActivity
                         assert popularRadioButton != null;
                         assert topRatedRadioButton != null;
 
-                        // Check which RadioButton is checked and launch FetchMovieTask with
-                        // the correct parameters
-//                        if (popularRadioButton.isChecked()) {
-//                            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(POPULAR);
-//                            fetchMoviesTask.execute();
-//                        } else if (topRatedRadioButton.isChecked()){
-//                            FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(RATING);
-//                            fetchMoviesTask.execute();
-//                        }
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MovieListActivity.this);
+                        SharedPreferences.Editor editor = prefs.edit();
 
+                        // Check which RadioButton is checked and set the preference accordingly
+                        if (popularRadioButton.isChecked()) {
+                            editor.putString(
+                                    getString(R.string.pref_sort_key),
+                                    getString(R.string.pref_sort_popularity)
+                            );
+                        } else if (topRatedRadioButton.isChecked()){
+                            editor.putString(
+                                    getString(R.string.pref_sort_key),
+                                    getString(R.string.pref_sort_rating)
+                            );
+                        }
+
+                        // Apply changes
+                        editor.apply();
+
+                        // Launch the MovieSyncIntentService to load the new data in the background
+                        Intent syncServiceIntent = new Intent(MovieListActivity.this, MovieSyncIntentService.class);
+                        startService(syncServiceIntent);
+
+                        // Restart the Loader to show the movies in the correct order
+                        getSupportLoaderManager().restartLoader(MOVIE_POSTER_LOADER_ID, null, MovieListActivity.this);
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
@@ -186,7 +202,7 @@ public class MovieListActivity extends AppCompatActivity
 
         // Retrieve user's sort preference from SharedPreferences
         String sortMethod = prefs.getString(
-                getString(R.string.pref_sort_popularity),
+                getString(R.string.pref_sort_key),
                 getString(R.string.pref_sort_popularity));
 
         // Create String to be used for sortOrder when querying the database
