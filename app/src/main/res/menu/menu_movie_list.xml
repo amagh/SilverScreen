@@ -4,6 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_favorite"
+        android:title="@string/pref_favorite_label"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_favorite" />
+
+    <item
         android:id="@+id/action_sort"
         android:title="@string/action_sort"
         android:orderInCategory="1"

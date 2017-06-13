@@ -109,6 +109,28 @@ public class MovieListActivity extends AppCompatActivity
                 return true;
             }
 
+            case R.id.action_favorite: {
+                // Check whether currently filtering for favorites only
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                boolean favoritesOnly = prefs.getBoolean(
+                        getString(R.string.pref_favorite_key),
+                        getResources().getBoolean(R.bool.pref_favorite_default)
+                );
+
+                // Toggle the filter
+                editor.putBoolean(
+                        getString(R.string.pref_favorite_key),
+                        !favoritesOnly
+                );
+
+                editor.apply();
+
+                // Restart the Loader with the new filter options
+                getSupportLoaderManager().restartLoader(MOVIE_POSTER_LOADER_ID, null, this);
+            }
+
             default: return super.onOptionsItemSelected(item);
         }
 
@@ -152,10 +174,24 @@ public class MovieListActivity extends AppCompatActivity
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Retrieve user's sort preference from SharedPreferences
+        // Retrieve user's sort and filter preference from SharedPreferences
         String sortMethod = prefs.getString(
                 getString(R.string.pref_sort_key),
                 getString(R.string.pref_sort_popularity));
+
+        boolean favoritesOnly = prefs.getBoolean(
+                getString(R.string.pref_favorite_key),
+                getResources().getBoolean(R.bool.pref_favorite_default)
+        );
+
+        // Create parameters for filtering
+        String selection = null;
+        String[] selectionArgs = null;
+
+        if (favoritesOnly) {
+            selection = MovieContract.MovieEntry.COLUMN_FAVORITE + " = ?";
+            selectionArgs = new String[] {"1"};
+        }
 
         // Create String to be used for sortOrder when querying the database
         String sortOrder;
@@ -170,8 +206,8 @@ public class MovieListActivity extends AppCompatActivity
                 this,
                 MovieContract.MovieEntry.CONTENT_URI,
                 MOVIE_POSTER_PROJECT,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 sortOrder
         );
     }
