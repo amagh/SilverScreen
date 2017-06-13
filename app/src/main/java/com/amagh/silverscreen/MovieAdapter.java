@@ -37,10 +37,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
         // Set mem var to reference newCursor
         mCursor = newCursor;
 
-        if (newCursor != null && newCursor.getCount() > 0) {
-            // If newCursor has count greater than zero, notify Adapter to change in data
-            notifyDataSetChanged();
-        }
+        notifyDataSetChanged();
     }
 
     @Override

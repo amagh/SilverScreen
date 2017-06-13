@@ -218,7 +218,7 @@ public class MovieListActivity extends AppCompatActivity
         mAdapter.swapCursor(data);
 
         // Hide the loading icon if movies have been loaded
-        if (data != null && data.moveToFirst()) hideLoading();
+        if (data != null) hideLoading();
     }
 
     @Override
