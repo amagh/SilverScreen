@@ -80,18 +80,10 @@ public class TheMovieDBUtils {
      * Builds a URL directing to the TheMovieDB.org API for accessing popular or top-rated movie
      * information or images.
      *
-     * @param context Interface to global Context
      * @return URL for accessing movie information
      * @throws MalformedURLException If URL is not a valid URL
      */
-    public static URL getMoviesURL(Context context) throws MalformedURLException {
-        // Retrieve sort method from SharedPreferences
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String sortMethod = prefs.getString(
-                context.getString(R.string.pref_sort_key),
-                context.getString(R.string.pref_sort_popularity)
-        );
-
+    public static URL getMoviesURL(String sortMethod) throws MalformedURLException {
         // Build URL using user's preferred sort-method
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(TMDB_MOVIE_PATH)
