@@ -103,7 +103,7 @@ public class TheMovieDBUtils {
     }
 
     /**
-     * Builds a URL directing to TheMovieDB.org's API for requesting genre information
+     * Builds a URL directing to TheMovieDB.org's API for requesting genre information.
      *
      * @return URL for accessing genre information
      * @throws MalformedURLException If URL is not a valid URL
@@ -120,6 +120,13 @@ public class TheMovieDBUtils {
         return new URL(builtUri.toString());
     }
 
+    /**
+     * Builds a URL directing to TheMovieDB.org's API for requesting trailer information.
+     *
+     * @param movieId The ID TheMovieDB.org uses to reference movies
+     * @return URL for accessing trailer information
+     * @throws MalformedURLException If the URL is not a valid URL
+     */
     public static URL getTrailersURL(int movieId) throws MalformedURLException {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(TMDB_MOVIE_PATH)
@@ -131,10 +138,17 @@ public class TheMovieDBUtils {
         return new URL(builtUri.toString());
     }
 
-    public static URL getReviewsURL(int movidId) throws MalformedURLException {
+    /**
+     * Builds a URL directing to TheMovieDB.org's API for requesting review information.
+     *
+     * @param movieId The ID used by TheMovieDB.org to reference a movie
+     * @return URL for accessing review information
+     * @throws MalformedURLException If the URL is not a valid URL
+     */
+    public static URL getReviewsURL(int movieId) throws MalformedURLException {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(TMDB_MOVIE_PATH)
-                .appendPath(Integer.toString(movidId))
+                .appendPath(Integer.toString(movieId))
                 .appendPath(TMDB_REVIEWS_PATH)
                 .appendQueryParameter(TMDB_API_QUERY, TMDB_API_KEY)
                 .build();
@@ -342,16 +356,29 @@ public class TheMovieDBUtils {
         return trailersValues;
     }
 
+    /**
+     * Creates an Array of ContentValues describing the review information for a movie from
+     * TheMovieDB.org.
+     *
+     * @param jsonResponse String containing a JSONObject describing review information
+     * @return An Array of ContentValues describing review information
+     * @throws JSONException If there is an error parsing the String to a JSONObject
+     */
     public static ContentValues[] getReviewsContentValuesFromJson(String jsonResponse)
             throws JSONException{
+        // Convert the String parameter to a JSONObject
         JSONObject reviewsJson = new JSONObject(jsonResponse);
 
+        // Retrieve the movieId from the JSONObject
         int movieId = reviewsJson.getInt(JSON_ID);
 
+        // Get the Array containing all the reviews
         JSONArray reviewsArray = reviewsJson.getJSONArray(JSON_RESULTS_ARRAY);
 
+        // Init the Array that will contain all the reviews
         ContentValues[] reviewsValues = new ContentValues[reviewsArray.length()];
 
+        // Iterate and create the ContentValues for each review in the JSONArray
         for (int i = 0; i < reviewsArray.length(); i++) {
             JSONObject reviewObject = reviewsArray.getJSONObject(i);
 
