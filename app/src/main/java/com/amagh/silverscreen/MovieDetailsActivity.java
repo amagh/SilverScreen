@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -97,6 +98,10 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
+    private LinearLayoutManager mReviewLayoutManager;
+
+    private int mReviewCount = -1;
+    private int mReviewPosition = 0;
 
     private boolean trailersLoaded = false;
     private boolean reviewsLoaded = false;
@@ -209,8 +214,8 @@ public class MovieDetailsActivity extends AppCompatActivity
         mBinding.movieDetailsContent.movieDetailsReviewsRv.setAdapter(mReviewAdapter);
 
         // Init LayoutManager
-        LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mBinding.movieDetailsContent.movieDetailsReviewsRv.setLayoutManager(llm);
+        mReviewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mBinding.movieDetailsContent.movieDetailsReviewsRv.setLayoutManager(mReviewLayoutManager);
 
         // Init SnapHelper to ensure discrete scrolling
         SnapHelper snapHelper = new LinearSnapHelper();
@@ -218,6 +223,57 @@ public class MovieDetailsActivity extends AppCompatActivity
 
         // Disable nested scrolling
         mBinding.movieDetailsContent.movieDetailsReviewsRv.setNestedScrollingEnabled(false);
+
+        // Add OnScrollListener to show/hide the left/right chevrons
+        mBinding.movieDetailsContent.movieDetailsReviewsRv.addOnScrollListener(
+                new RecyclerViewOnScrollListener(mReviewLayoutManager) {
+            @Override
+            public void onScrolled(int position) {
+                // Set member variable to new scroll position
+                mReviewPosition = position;
+
+                // Get total number of reviews
+                if (mReviewCount == -1) {
+                    mReviewCount = mReviewAdapter.getItemCount();
+                }
+
+                // Show/hide the visibility of the chevrons depending on the relative position of
+                // visible review item
+                if (mReviewCount == 1) {
+                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.INVISIBLE);
+                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.INVISIBLE);
+                } else if (position > 0 && position < mReviewCount - 1){
+                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.VISIBLE);
+                } else if (position == 0) {
+                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.INVISIBLE);
+                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.VISIBLE);
+                } else if (position == mReviewCount - 1) {
+                    mBinding.movieDetailsContent.listReviewLeftChevron.setVisibility(View.VISIBLE);
+                    mBinding.movieDetailsContent.listReviewRightChevron.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    public void scrollRight(View view) {
+        if (mReviewPosition < mReviewCount - 1) {
+            mReviewLayoutManager.smoothScrollToPosition(
+                    mBinding.movieDetailsContent.movieDetailsReviewsRv,
+                    null,
+                    mReviewPosition + 1
+            );
+        }
+    }
+
+    public void scrollLeft(View view) {
+        if (mReviewPosition > 0) {
+            mReviewLayoutManager.smoothScrollToPosition(
+                    mBinding.movieDetailsContent.movieDetailsReviewsRv,
+                    null,
+                    mReviewPosition - 1
+            );
+        }
     }
 
     /**

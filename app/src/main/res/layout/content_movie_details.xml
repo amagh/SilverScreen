@@ -157,6 +157,26 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 
+            <ImageView
+                android:id="@+id/list_review_left_chevron"
+                android:layout_width="@dimen/detail_review_chevron_icon_size"
+                android:layout_height="@dimen/detail_review_chevron_icon_size"
+                android:src="@drawable/ic_chevron_left"
+                android:onClick="scrollLeft"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/movie_details_reviews_rv"
+                app:layout_constraintBottom_toBottomOf="@id/movie_details_reviews_rv"/>
+
+            <ImageView
+                android:id="@+id/list_review_right_chevron"
+                android:layout_width="@dimen/detail_review_chevron_icon_size"
+                android:layout_height="@dimen/detail_review_chevron_icon_size"
+                android:src="@drawable/ic_chevron_right"
+                android:onClick="scrollRight"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/movie_details_reviews_rv"
+                app:layout_constraintBottom_toBottomOf="@id/movie_details_reviews_rv" />
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v4.widget.NestedScrollView>
