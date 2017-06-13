@@ -48,10 +48,10 @@ public class MoviesProvider extends ContentProvider {
     static {
         sMoviesAndGenresQueryBuilder = new SQLiteQueryBuilder();
         sMoviesAndGenresQueryBuilder.setTables(
-                MovieEntry.TABLE_NAME + " INNER JOIN " +
+                MovieEntry.TABLE_NAME + " LEFT JOIN " +
                 LinkGenresMovies.TABLE_NAME + " ON " +
                 MovieEntry.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID + " = " +
-                LinkGenresMovies.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID + " INNER JOIN " +
+                LinkGenresMovies.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID + " LEFT JOIN " +
                 GenreEntry.TABLE_NAME + " ON " +
                 LinkGenresMovies.TABLE_NAME + "." + GenreEntry.COLUMN_GENRE_ID + " = " +
                 GenreEntry.TABLE_NAME + "." + GenreEntry.COLUMN_GENRE_ID
