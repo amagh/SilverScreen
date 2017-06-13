@@ -29,6 +29,7 @@ public class MovieListActivity extends AppCompatActivity
     // **Constants** //
     private final String TAG = MovieListActivity.class.getSimpleName();
     private final static int MOVIE_POSTER_LOADER_ID = 8323;
+    private static final String SORT_DIALOG = "sort_dialog";
 
     // Column projection
     public static final String[] MOVIE_POSTER_PROJECT = new String[] {
@@ -89,10 +90,21 @@ public class MovieListActivity extends AppCompatActivity
             case R.id.action_sort: {
 
                 // Show a Dialog to allow the user to select how to query TheMovieDB.org
-                AlertDialog dialog = buildSortDialog();
+//                AlertDialog dialog = buildSortDialog();
+                SortDialog dialog = new SortDialog();
+
+                // Set the PositiveClickListener
+                dialog.setPositiveClickHandler(new SortDialog.PositiveClickHandler() {
+                    @Override
+                    public void onPositiveClick() {
+                        // Restart the Loader with the new sort order
+                        MovieListActivity.this.getSupportLoaderManager()
+                                .restartLoader(MOVIE_POSTER_LOADER_ID, null, MovieListActivity.this);
+                    }
+                });
 
                 // Show the Dialog when the menu item is selected
-                dialog.show();
+                dialog.show(getSupportFragmentManager(), SORT_DIALOG);
 
                 return true;
             }
@@ -101,66 +113,6 @@ public class MovieListActivity extends AppCompatActivity
         }
 
     }
-
-    /**
-     * Builds an AlertDialog with option to select either sort by popular or top rated
-     *
-     * @return AlertDialog
-     */
-    private AlertDialog buildSortDialog() {
-        // Build and return the AlertDialog
-        return new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.dialog_sort_title))
-                .setView(R.layout.dialog_sort)
-                .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog1, int i) {
-                        // Obtain references to the RadioButton Views
-                        RadioButton popularRadioButton =
-                                (RadioButton) ((AlertDialog) dialog1).findViewById(R.id.dialog_popular_rb);
-
-                        RadioButton topRatedRadioButton =
-                                (RadioButton) ((AlertDialog) dialog1).findViewById(R.id.dialog_top_rated_rb);
-
-                        assert popularRadioButton != null;
-                        assert topRatedRadioButton != null;
-
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MovieListActivity.this);
-                        SharedPreferences.Editor editor = prefs.edit();
-
-                        // Check which RadioButton is checked and set the preference accordingly
-                        if (popularRadioButton.isChecked()) {
-                            editor.putString(
-                                    getString(R.string.pref_sort_key),
-                                    getString(R.string.pref_sort_popularity)
-                            );
-                        } else if (topRatedRadioButton.isChecked()){
-                            editor.putString(
-                                    getString(R.string.pref_sort_key),
-                                    getString(R.string.pref_sort_rating)
-                            );
-                        }
-
-                        // Apply changes
-                        editor.apply();
-
-                        // Launch the MovieSyncIntentService to load the new data in the background
-                        Intent syncServiceIntent = new Intent(MovieListActivity.this, MovieSyncIntentService.class);
-                        startService(syncServiceIntent);
-
-                        // Restart the Loader to show the movies in the correct order
-                        getSupportLoaderManager().restartLoader(MOVIE_POSTER_LOADER_ID, null, MovieListActivity.this);
-                    }
-                })
-                .setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Do nothing. Just dismiss the Dialog
-                    }
-                })
-                .create();
-    }
-
 
     private final MovieAdapter.MovieClickHandler mMovieClickHandler = new MovieAdapter.MovieClickHandler() {
         @Override
