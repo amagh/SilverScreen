@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -256,6 +255,11 @@ public class MovieDetailsActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Scrolls to the next review if there is one.
+     *
+     * @param view Clicked View
+     */
     public void scrollRight(View view) {
         if (mReviewPosition < mReviewCount - 1) {
             mReviewLayoutManager.smoothScrollToPosition(
@@ -266,6 +270,10 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Scrolls  to the previous review if there is one.
+     * @param view Clicked View
+     */
     public void scrollLeft(View view) {
         if (mReviewPosition > 0) {
             mReviewLayoutManager.smoothScrollToPosition(
@@ -476,6 +484,10 @@ public class MovieDetailsActivity extends AppCompatActivity
                 if ((cursor == null || !cursor.moveToFirst()) && !trailersLoaded) {
                     // Trailer data has not been loaded. Start the AsyncTaskLoader to load the data
                     getSupportLoaderManager().initLoader(TRAILERS_SYNC_LOADER, null, this);
+                } else if (cursor == null || !cursor.moveToFirst()) {
+                    // Hide the trailer associated Views if there are no trailers to display
+                    mBinding.movieDetailsContent.movieDetailsTrailersRv.setVisibility(View.GONE);
+                    mBinding.movieDetailsContent.movieDetailsTrailersTitleTv.setVisibility(View.GONE);
                 } else {
                     mTrailerAdapter.swapCursor(cursor);
                 }
@@ -491,6 +503,10 @@ public class MovieDetailsActivity extends AppCompatActivity
                 if ((cursor == null || !cursor.moveToFirst()) && !reviewsLoaded) {
                     // Review data has not been loaded. Start the AsyncTaskLoader to load the data
                     getSupportLoaderManager().initLoader(REVIEWS_SYNC_LOADER, null, this);
+                } else if (cursor == null || !cursor.moveToFirst()) {
+                    // Hide the reviews associated Views if there are no reviews to display
+                    mBinding.movieDetailsContent.movieDetailsReviewsRv.setVisibility(View.GONE);
+                    mBinding.movieDetailsContent.movieDetailsReviewsTitleTv.setVisibility(View.GONE);
                 } else {
                     mReviewAdapter.swapCursor(cursor);
                 }
