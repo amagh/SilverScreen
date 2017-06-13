@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
  * Created by hnoct on 6/7/2017.
  */
 
+@SuppressWarnings("WeakerAccess")
 public class TestUtilities {
     public static void validateCursorValues(Cursor cursor, ContentValues values) {
         String nullCursorError = "Cursor is null. Is ContentProvider registered in " +

@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -53,7 +51,7 @@ public class ReviewDialog extends DialogFragment implements LoaderManager.Loader
     /**
      * Binds data to the Views
      */
-    void bind() {
+    private void bind() {
         // Retrieve review information
         String content = mCursor.getString(IDX_REVIEW_CONTENT);
         String author = mCursor.getString(IDX_REVIEW_AUTHOR);

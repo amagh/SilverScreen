@@ -19,7 +19,6 @@ public class MovieContract {
     public static final String PATH_REVIEWS = "reviews";
 
     public static final String PATH_LINK_GENRES_MOVIES = "link_genres_movies";
-    public static final String PATH_LINK_TRAILERS_MOVIES = "link_trailers_movies";
 
     public static class MovieEntry implements BaseColumns {
         // Content URI for accessing table information

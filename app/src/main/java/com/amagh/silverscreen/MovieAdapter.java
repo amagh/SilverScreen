@@ -2,27 +2,19 @@ package com.amagh.silverscreen;
 
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.amagh.silverscreen.data.MovieContract;
 import com.amagh.silverscreen.databinding.ListItemMovieBinding;
 import com.bumptech.glide.Glide;
-
-import java.util.List;
 
 /**
  * Created by hnoct on 6/1/2017.
  */
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    // **Constants** //
-    private final String TAG = MovieAdapter.class.getSimpleName();
 
     // **Mem Vars** //
     private Cursor mCursor;
@@ -69,7 +61,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Mem Vars
-        private ListItemMovieBinding mBinding;
+        private final ListItemMovieBinding mBinding;
 
         MovieViewHolder(ListItemMovieBinding binding) {
             super(binding.getRoot());

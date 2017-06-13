@@ -9,7 +9,7 @@ import com.firebase.jobdispatcher.JobService;
 
 public class MovieSyncFirebaseJobService extends JobService {
     // **Member Variables** //
-    Thread syncThread;
+    private Thread syncThread;
 
     @Override
     public boolean onStartJob(final JobParameters job) {

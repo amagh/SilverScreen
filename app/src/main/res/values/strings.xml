@@ -7,7 +7,6 @@
     </string>
 
     <string name="action_sort">Sort</string>
-    <string name="format_release_date">Released: %s</string>
     <string name="format_rating">%.1f/10</string>
 
     <string name="dialog_sort_title">Sort by</string>

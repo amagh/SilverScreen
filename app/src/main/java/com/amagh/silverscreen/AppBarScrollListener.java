@@ -1,18 +1,17 @@
 package com.amagh.silverscreen;
 
 import android.support.design.widget.AppBarLayout;
-import android.util.Log;
 import android.widget.ImageView;
 
 /**
  * Created by hnoct on 6/9/2017.
  */
 
-public abstract class AppBarScrollListener implements AppBarLayout.OnOffsetChangedListener {
-    public int mScrollState = ScrollState.EXPANDED;
-    public int mPosterState = PosterState.AT_TOP;
+abstract class AppBarScrollListener implements AppBarLayout.OnOffsetChangedListener {
+    private int mScrollState = ScrollState.EXPANDED;
+    private int mPosterState = PosterState.AT_TOP;
     private int mPreviousY;
-    private ImageView mPosterView;
+    private final ImageView mPosterView;
 
     public interface ScrollState {
         int EXPANDED = 0;

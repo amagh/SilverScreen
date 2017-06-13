@@ -22,7 +22,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     // **Member Variables** //
     private Cursor mCursor;
-    private ReviewClickHandler mReviewClickHandler;
+    private final ReviewClickHandler mReviewClickHandler;
 
     public ReviewAdapter(ReviewClickHandler reviewClickHandler) {
         mReviewClickHandler = reviewClickHandler;
@@ -76,7 +76,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     }
 
     public class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ListItemReviewBinding mBinding;
+        final ListItemReviewBinding mBinding;
 
         public ReviewViewHolder(ListItemReviewBinding binding) {
             super(binding.getRoot());

@@ -32,7 +32,6 @@ import static com.amagh.silverscreen.data.MovieContract.*;
 public class MovieDetailsActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks {
     // **Constants** //
-    private static final String TAG = MovieDetailsActivity.class.getSimpleName();
 
     // Loader IDs
     private static final int MOVIE_DETAILS_LOADER = 6984;
@@ -45,6 +44,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     private static final String REVIEW_DIALOG = "review_dialog";
 
     // Column Projection
+    @SuppressWarnings("WeakerAccess")
     public static final String[] DETAILS_PROJECTION = new String[] {
             MovieEntry.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID,
             MovieEntry.COLUMN_TITLE,
@@ -54,7 +54,6 @@ public class MovieDetailsActivity extends AppCompatActivity
             MovieEntry.COLUMN_VOTE_AVG,
             MovieEntry.COLUMN_SYNOPSIS,
             MovieEntry.COLUMN_FAVORITE,
-            GenreEntry.TABLE_NAME + "." + GenreEntry.COLUMN_GENRE_ID,
             GenreEntry.COLUMN_GENRE
     };
 
@@ -66,22 +65,20 @@ public class MovieDetailsActivity extends AppCompatActivity
     private static final int IDX_MOVIE_VOTE_AVG             = 5;
     private static final int IDX_MOVIE_SYNPOSIS             = 6;
     private static final int IDX_MOVIE_FAVORITE             = 7;
-    private static final int IDX_MOVIE_GENRE_ID             = 8;
-    private static final int IDX_MOVIE_GENRE                = 9;
+    private static final int IDX_MOVIE_GENRE                = 8;
 
+    @SuppressWarnings("WeakerAccess")
     public static final String[] TRAILERS_PROJECTION = new String[] {
             MovieEntry.COLUMN_MOVIE_ID,
             TrailerEntry.COLUMN_NAME,
-            TrailerEntry.COLUMN_TYPE,
             TrailerEntry.COLUMN_VIDEO_PATH,
             TrailerEntry.COLUMN_THUMBNAIL_PATH
     };
 
     public interface TRAILER_INDEX {
         int IDX_TRAILER_NAME                                = 1;
-        int IDX_TRAILER_TYPE                                = 2;
-        int IDX_TRAILER_VIDEO_PATH                          = 3;
-        int IDX_TRAILER_THUMBNAIL_PATH                      = 4;
+        int IDX_TRAILER_VIDEO_PATH                          = 2;
+        int IDX_TRAILER_THUMBNAIL_PATH                      = 3;
     }
 
     public static final String[] REVIEWS_PROJECTION = new String[] {
@@ -98,7 +95,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     // **Member Variables** //
-    ActivityMovieDetailsBinding mBinding;
+    private ActivityMovieDetailsBinding mBinding;
 
     private Uri mUri;
     private int mMovieId;
@@ -357,7 +354,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         mBinding.executePendingBindings();
     }
 
-    Runnable applyPosterMargin = new Runnable() {
+    private final Runnable applyPosterMargin = new Runnable() {
         @Override
         public void run() {
             // Retrieve the LayoutParams
@@ -371,7 +368,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
     };
 
-    ReviewAdapter.ReviewClickHandler reviewClickHandler = new ReviewAdapter.ReviewClickHandler() {
+    private final ReviewAdapter.ReviewClickHandler reviewClickHandler = new ReviewAdapter.ReviewClickHandler() {
         @Override
         public void onClickReview(String reviewId) {
             // Build the URI for the movie review clicked
@@ -384,7 +381,7 @@ public class MovieDetailsActivity extends AppCompatActivity
         }
     };
 
-    TrailerAdapter.TrailerClickHandler trailerClickHandler = new TrailerAdapter.TrailerClickHandler() {
+    private final TrailerAdapter.TrailerClickHandler trailerClickHandler = new TrailerAdapter.TrailerClickHandler() {
         @Override
         public void onTrailerClicked(String trailerPath) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerPath));

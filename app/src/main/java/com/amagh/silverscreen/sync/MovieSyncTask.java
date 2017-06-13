@@ -2,7 +2,6 @@ package com.amagh.silverscreen.sync;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
 import com.amagh.silverscreen.R;
@@ -13,8 +12,6 @@ import com.amagh.silverscreen.utilities.TheMovieDBUtils;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.net.URL;
 
 /**
@@ -53,8 +50,8 @@ public class MovieSyncTask {
 
             // Connect to TheMovieDB.org and retrieve movie information for both popular and
             // top-rated movies
-            for (int i = 0; i < sortMethods.length; i++) {
-                URL tmdbMoviesUrl = TheMovieDBUtils.getMoviesURL(sortMethods[i]);
+            for (String sortMethod : sortMethods) {
+                URL tmdbMoviesUrl = TheMovieDBUtils.getMoviesURL(sortMethod);
                 String moviesJsonResponse = TheMovieDBUtils.getHttpResponse(tmdbMoviesUrl);
 
                 ContentValues[] movieValues =

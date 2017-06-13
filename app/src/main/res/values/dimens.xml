@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="detail_poster_width">100dp</dimen>
-    <dimen name="detail_poster_margin">16dp</dimen>
     <dimen name="detail_favorite_icon_size">24dp</dimen>
     <dimen name="detail_review_chevron_icon_size">32dp</dimen>
     <dimen name="detail_toolbar_title_left_margin">132dp</dimen>
 
     <dimen name="text_vertical_margin">8dp</dimen>
-    <dimen name="text_horizontal_margin">16dp</dimen>
 
     <dimen name="activity_margin">16dp</dimen>
 

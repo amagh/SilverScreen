@@ -1,6 +1,5 @@
 package com.amagh.silverscreen.utilities;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +18,7 @@ public class ViewUtils {
      * @param pixels Number of pixels to convert to DIPs
      * @return Equivalent number of DIPs corresponding to the input pixels
      */
+    @SuppressWarnings("unused")
     public static float convertPixelsToDp(float pixels) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         return pixels / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -41,6 +41,7 @@ public class ViewUtils {
      * @param window The Window being displayed by an Activity
      * @return The height of the status bar in pixels
      */
+    @SuppressWarnings("WeakerAccess")
     public static float getStatusBarHeight(Window window) {
         // Init a Rect to hold the Display Frame of the DecorView
         Rect rectangle = new Rect();
@@ -53,13 +54,10 @@ public class ViewUtils {
         return rectangle.top;
     }
 
-    public static float calculatePosterTopMargin(Window window, Toolbar toolbar, float margin) {
+    public static float calculatePosterTopMargin(Window window, Toolbar toolbar, @SuppressWarnings("SameParameterValue") float margin) {
         float statusBarHeight = getStatusBarHeight(window);
-        Log.d("TEST", "StatusBar Height: " + statusBarHeight);
         float toolbarHeight = toolbar.getHeight();
-        Log.d("TEST", "Toolbar Height: " + toolbarHeight);
         float marginPx = convertDpToPixels(margin);
-        Log.d("TEST", "Margin in px: " + marginPx);
         return statusBarHeight + toolbarHeight + marginPx;
     }
 }

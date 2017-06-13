@@ -1,6 +1,5 @@
 package com.amagh.silverscreen;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,33 +16,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 
 import com.amagh.silverscreen.data.MovieContract;
-import com.amagh.silverscreen.sync.MovieSyncIntentService;
 import com.amagh.silverscreen.sync.MovieSyncUtils;
 
 public class MovieListActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
     // **Constants** //
-    private final String TAG = MovieListActivity.class.getSimpleName();
     private final static int MOVIE_POSTER_LOADER_ID = 8323;
     private static final String SORT_DIALOG = "sort_dialog";
 
     // Column projection
+    @SuppressWarnings("WeakerAccess")
     public static final String[] MOVIE_POSTER_PROJECT = new String[] {
             MovieContract.MovieEntry.COLUMN_MOVIE_ID,
             MovieContract.MovieEntry.COLUMN_POSTER_PATH,
-            MovieContract.MovieEntry.COLUMN_POPULARITY,
-            MovieContract.MovieEntry.COLUMN_VOTE_AVG
     };
 
     public static final int IDX_MOVIE_ID = 0;
     public static final int IDX_POSTER_PATH = 1;
-    public static final int IDX_POPULARITY = 2;
-    public static final int IDX_RATING = 3;
 
     // **Mem Vars** //
+    @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
     private ProgressBar mProgressBar;
@@ -90,7 +83,6 @@ public class MovieListActivity extends AppCompatActivity
             case R.id.action_sort: {
 
                 // Show a Dialog to allow the user to select how to query TheMovieDB.org
-//                AlertDialog dialog = buildSortDialog();
                 SortDialog dialog = new SortDialog();
 
                 // Set the PositiveClickListener

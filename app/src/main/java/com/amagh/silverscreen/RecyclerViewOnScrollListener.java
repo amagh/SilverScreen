@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 
 public abstract class RecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
     // **Member Variables** //
-    private LinearLayoutManager mLayoutManager;
+    private final LinearLayoutManager mLayoutManager;
 
     public RecyclerViewOnScrollListener(LinearLayoutManager linearLayoutManager) {
         super();

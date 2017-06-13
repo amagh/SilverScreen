@@ -3,7 +3,6 @@ package com.amagh.silverscreen.sync;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.amagh.silverscreen.utilities.DatabaseUtils;
 import com.firebase.jobdispatcher.Constraint;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MovieSyncUtils {
     // **Constants ** //
-    private static final String TAG = MovieSyncUtils.class.getSimpleName();
     private static final int SIX_HOURS = (int) TimeUnit.HOURS.toSeconds(6);
     private static final int SYNC_FLEX_THREE_HOURS = (int) TimeUnit.HOURS.toSeconds(3);
 
@@ -68,7 +66,7 @@ public class MovieSyncUtils {
      *
      * @param context Interface to global Context
      */
-    static void scheduleFirebaseJobDispatcherSync(@NonNull Context context) {
+    private static void scheduleFirebaseJobDispatcherSync(@NonNull Context context) {
         // Init FirebaseJobDispatcher
         GooglePlayDriver driver = new GooglePlayDriver(context);
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);

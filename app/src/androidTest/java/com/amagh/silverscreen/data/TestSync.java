@@ -19,11 +19,13 @@ import static org.junit.Assert.assertTrue;
  * Created by hnoct on 6/12/2017.
  */
 
+@SuppressWarnings("FieldCanBeLocal")
 @RunWith(AndroidJUnit4.class)
 public class TestSync {
     // **Member Variables** //
-    private Context context = InstrumentationRegistry.getTargetContext();
+    private final Context context = InstrumentationRegistry.getTargetContext();
     private MovieDbHelper mHelper;
+    @SuppressWarnings("unused")
     private SQLiteDatabase mDatabase;
 
     @Before

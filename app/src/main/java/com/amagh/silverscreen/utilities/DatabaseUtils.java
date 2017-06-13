@@ -8,9 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.amagh.silverscreen.data.MovieContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +19,6 @@ import static com.amagh.silverscreen.data.MovieContract.*;
  */
 
 public class DatabaseUtils {
-    // **Constants** //
-    private static final String TAG = DatabaseUtils.class.getSimpleName();
 
     /**
      * Queries the database to check that the genre table was created and that it contains rows
@@ -74,7 +69,7 @@ public class DatabaseUtils {
             try {
                 return cursor.getCount();
             } finally {
-                cursor.close();;
+                cursor.close();
             }
         } else {
             return 0;

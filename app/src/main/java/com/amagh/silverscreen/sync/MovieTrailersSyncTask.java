@@ -2,7 +2,6 @@ package com.amagh.silverscreen.sync;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.amagh.silverscreen.data.MovieContract;
@@ -11,7 +10,6 @@ import com.amagh.silverscreen.utilities.TheMovieDBUtils;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**

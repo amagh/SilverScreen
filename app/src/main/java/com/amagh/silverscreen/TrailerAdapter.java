@@ -23,7 +23,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     // **Member Variables **//
     private Cursor mCursor;
-    private TrailerClickHandler mTrailerClickHandler;
+    private final TrailerClickHandler mTrailerClickHandler;
 
     public TrailerAdapter(TrailerClickHandler trailerClickHandler) {
         mTrailerClickHandler = trailerClickHandler;
@@ -72,7 +72,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     }
 
     public interface TrailerClickHandler {
-        public void onTrailerClicked(String trailerPath);
+        void onTrailerClicked(String trailerPath);
     }
 
     /**
@@ -80,7 +80,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
      */
     public class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // **Member Variables** //
-        ListItemTrailerBinding mBinding;
+        final ListItemTrailerBinding mBinding;
 
         public TrailerViewHolder(ListItemTrailerBinding binding) {
             super(binding.getRoot());

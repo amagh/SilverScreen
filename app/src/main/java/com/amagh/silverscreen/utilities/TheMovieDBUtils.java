@@ -2,12 +2,9 @@ package com.amagh.silverscreen.utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 
 import com.amagh.silverscreen.BuildConfig;
-import com.amagh.silverscreen.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -209,7 +206,7 @@ public class TheMovieDBUtils {
             value.put(MovieEntry.COLUMN_SYNOPSIS,  movieObject.getString(JSON_OVERVIEW));
             value.put(MovieEntry.COLUMN_RELEASE_DATE,  movieObject.getString(JSON_RELEASE_DATE));
             value.put(MovieEntry.COLUMN_TITLE,  movieObject.getString(JSON_TITLE));
-            value.put(MovieEntry.COLUMN_BACKDROP_PATH,  TMDB_BACKDROP_BASE_PATH + movieObject.getString(JSON_BACKDROP));;
+            value.put(MovieEntry.COLUMN_BACKDROP_PATH,  TMDB_BACKDROP_BASE_PATH + movieObject.getString(JSON_BACKDROP));
             value.put(MovieEntry.COLUMN_MOVIE_ID,  movieObject.getInt(JSON_ID));
             value.put(MovieEntry.COLUMN_VOTE_AVG,  movieObject.getDouble(JSON_VOTE_AVERAGE));
             value.put(MovieEntry.COLUMN_VOTE_COUNT,  movieObject.getInt(JSON_VOTE_COUNT));

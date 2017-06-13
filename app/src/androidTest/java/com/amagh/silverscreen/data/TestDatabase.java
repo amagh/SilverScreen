@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import com.amagh.silverscreen.data.MovieContract;
 import com.amagh.silverscreen.data.MovieDbHelper;
 
 import org.junit.After;
@@ -31,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class TestDatabase {
     // **Member Variables** //
-    private Context context = InstrumentationRegistry.getTargetContext();
+    private final Context context = InstrumentationRegistry.getTargetContext();
     private MovieDbHelper mHelper;
     private SQLiteDatabase mDatabase;
 
@@ -76,6 +74,10 @@ public class TestDatabase {
             tableError = tableError + table + ",";
         }
         assertTrue(tableError, tableNames.isEmpty());
+
+        if (tableNameCursor != null) {
+            tableNameCursor.close();
+        }
     }
 
     @Test
