@@ -34,6 +34,7 @@
             android:id="@+id/list_trailer_title_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:lines="2"
             tools:text="Trailer"
             android:gravity="center_horizontal"
             style="@style/CaptionText"
