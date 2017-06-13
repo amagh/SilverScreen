@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import static com.amagh.silverscreen.MovieDetailsActivity.TRAILER_INDEX.IDX_TRAILER_NAME;
 import static com.amagh.silverscreen.MovieDetailsActivity.TRAILER_INDEX.IDX_TRAILER_THUMBNAIL_PATH;
+import static com.amagh.silverscreen.MovieDetailsActivity.TRAILER_INDEX.IDX_TRAILER_VIDEO_PATH;
 
 /**
  * Created by hnoct on 6/9/2017.
@@ -22,6 +23,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     // **Member Variables **//
     private Cursor mCursor;
+    private TrailerClickHandler mTrailerClickHandler;
+
+    public TrailerAdapter(TrailerClickHandler trailerClickHandler) {
+        mTrailerClickHandler = trailerClickHandler;
+    }
 
     @Override
     public TrailerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,15 +71,21 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         }
     }
 
+    public interface TrailerClickHandler {
+        public void onTrailerClicked(String trailerPath);
+    }
+
     /**
      * ViewHolder pattern for trailers
      */
-    public class TrailerViewHolder extends RecyclerView.ViewHolder {
+    public class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // **Member Variables** //
         ListItemTrailerBinding mBinding;
 
         public TrailerViewHolder(ListItemTrailerBinding binding) {
             super(binding.getRoot());
+
+            binding.getRoot().setOnClickListener(this);
             mBinding = binding;
         }
 
@@ -94,6 +106,17 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
             // Force bindings to run immediately
             mBinding.executePendingBindings();
+        }
+
+        @Override
+        public void onClick(View view) {
+            // Retrieve the path for the trailer video
+            int position = getAdapterPosition();
+            mCursor.moveToPosition(position);
+
+            String videoPath = mCursor.getString(IDX_TRAILER_VIDEO_PATH);
+
+            mTrailerClickHandler.onTrailerClicked(videoPath);
         }
     }
 }

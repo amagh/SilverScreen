@@ -197,7 +197,7 @@ public class MovieDetailsActivity extends AppCompatActivity
      */
     private void setupTrailers() {
         // Init mTrailerAdapter
-        mTrailerAdapter = new TrailerAdapter();
+        mTrailerAdapter = new TrailerAdapter(trailerClickHandler);
         mBinding.movieDetailsContent.movieDetailsTrailersRv.setAdapter(mTrailerAdapter);
 
         // Init LayoutManager
@@ -352,17 +352,40 @@ public class MovieDetailsActivity extends AppCompatActivity
     ReviewAdapter.ReviewClickHandler reviewClickHandler = new ReviewAdapter.ReviewClickHandler() {
         @Override
         public void onClickReview(String reviewId) {
+            // Build the URI for the movie review clicked
             Uri reviewUri = ReviewEntry.CONTENT_URI.buildUpon()
                     .appendPath(reviewId)
                     .build();
 
+            // Show a Dialog with the full contents of the review
             showReviewDialog(reviewUri);
         }
     };
 
+    TrailerAdapter.TrailerClickHandler trailerClickHandler = new TrailerAdapter.TrailerClickHandler() {
+        @Override
+        public void onTrailerClicked(String trailerPath) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(trailerPath));
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+    };
+
+    /**
+     * Creates and shows a ReviewDialog with the full contents of the clicked review
+     *
+     * @param reviewUri URI pointing to the review in the database
+     */
     private void showReviewDialog(Uri reviewUri) {
+        // Init the ReviewDialog
         ReviewDialog dialog = new ReviewDialog();
+
+        // Set the URI of the review
         dialog.setData(reviewUri);
+
+        // Show
         dialog.show(getFragmentManager(), REVIEW_DIALOG);
     }
 
