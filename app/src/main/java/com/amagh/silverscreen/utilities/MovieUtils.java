@@ -9,7 +9,12 @@ import java.util.Locale;
  * Created by hnoct on 6/8/2017.
  */
 
-public class MovieUtils {
+public final class MovieUtils {
+    /**
+     * Suppressed Constructor
+     */
+    private MovieUtils() {}
+
     /**
      * Converts the time utilized by TheMovieDB.org to an easier to read date format
      *

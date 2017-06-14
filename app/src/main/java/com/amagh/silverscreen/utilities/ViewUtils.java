@@ -11,7 +11,12 @@ import android.view.Window;
  * Created by hnoct on 6/9/2017.
  */
 
-public class ViewUtils {
+public final class ViewUtils {
+    /**
+     * Suppressed Constructor
+     */
+    private ViewUtils() {}
+
     /**
      * Convert a number of pixels to its closest equivalent display independent pixels.
      *

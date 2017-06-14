@@ -18,7 +18,11 @@ import static com.amagh.silverscreen.data.MovieContract.*;
  * Created by hnoct on 6/7/2017.
  */
 
-public class DatabaseUtils {
+public final class DatabaseUtils {
+    /**
+     * Suppressed Constructor
+     */
+    private DatabaseUtils() {}
 
     /**
      * Queries the database to check that the genre table was created and that it contains rows
