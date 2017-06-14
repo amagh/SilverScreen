@@ -3,7 +3,9 @@ package com.amagh.silverscreen;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -11,13 +13,12 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.amagh.silverscreen.data.MovieContract;
+import com.amagh.silverscreen.databinding.ActivityMovieListBinding;
 import com.amagh.silverscreen.sync.MovieSyncUtils;
 
 public class MovieListActivity extends AppCompatActivity
@@ -25,6 +26,7 @@ public class MovieListActivity extends AppCompatActivity
     // **Constants** //
     private final static int MOVIE_POSTER_LOADER_ID = 8323;
     private static final String SORT_DIALOG = "sort_dialog";
+    private static final String SCROLL_STATE_KEY = "scroll_state";
 
     // Column projection
     @SuppressWarnings("WeakerAccess")
@@ -38,27 +40,23 @@ public class MovieListActivity extends AppCompatActivity
 
     // **Mem Vars** //
     @SuppressWarnings("FieldCanBeLocal")
-    private RecyclerView mRecyclerView;
+    private ActivityMovieListBinding mBinding;
     private MovieAdapter mAdapter;
-    private ProgressBar mProgressBar;
+    private Parcelable mScrollState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_list);
-
-        // Obtain references to Views
-        mRecyclerView = (RecyclerView) findViewById(R.id.movie_list_rv);
-        mProgressBar = (ProgressBar) findViewById(R.id.movie_list_pb);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_list);
 
         // Init/set LayoutManager
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mBinding.movieListRv.setLayoutManager(layoutManager);
 
         // Init/set MovieAdapter
         mAdapter = new MovieAdapter(mMovieClickHandler);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setHasFixedSize(true);
+        mBinding.movieListRv.setAdapter(mAdapter);
+        mBinding.movieListRv.setHasFixedSize(true);
 
         // Fetch movies
         MovieSyncUtils.initialize(this);
@@ -68,6 +66,12 @@ public class MovieListActivity extends AppCompatActivity
 
         // Show mProgressBar
         showLoading();
+
+        if (savedInstanceState != null) {
+            // Restore the scroll state
+            mScrollState = savedInstanceState.getParcelable(SCROLL_STATE_KEY);
+            mBinding.movieListRv.getLayoutManager().onRestoreInstanceState(mScrollState);
+        }
     }
 
     @Override
@@ -148,18 +152,29 @@ public class MovieListActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Store scroll state
+        outState.putParcelable(
+                SCROLL_STATE_KEY,
+                mBinding.movieListRv.getLayoutManager().onSaveInstanceState()
+        );
+    }
+
     /**
      * Shows the mProgressBar
      */
     private void showLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        mBinding.movieListPb.setVisibility(View.VISIBLE);
     }
 
     /**
      * Hides mProgressBar
      */
     private void hideLoading() {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        mBinding.movieListPb.setVisibility(View.INVISIBLE);
     }
 
     @Override

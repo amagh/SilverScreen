@@ -20,6 +20,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Cursor mCursor;
     private final MovieClickHandler mClickHandler;
     private int posterHeight = 0;
+    private boolean heightSet = false;
 
     MovieAdapter(MovieClickHandler clickHandler) {
         mClickHandler = clickHandler;
@@ -38,6 +39,15 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ListItemMovieBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_item_movie, parent, false);
 
+        if (heightSet) {
+            // Set the height of the ViewHolder's ImageView
+            ViewGroup.LayoutParams params = binding.movieItemPosterIv.getLayoutParams();
+            params.height = posterHeight;
+            binding.movieItemPosterIv.setLayoutParams(params);
+
+            heightSet = true;
+//            mListener.onHeightLoaded();
+        }
         return new MovieViewHolder(binding);
     }
 
@@ -86,13 +96,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
          * Bind data to Views
          */
         private void bind(Cursor cursor) {
-            // Set the height of the ViewHolder's ImageView
-            if (posterHeight != 0) {
-                ViewGroup.LayoutParams params = mBinding.movieItemPosterIv.getLayoutParams();
-                params.height = posterHeight;
 
-                mBinding.movieItemPosterIv.setLayoutParams(params);
-            }
 
             // Retrieve the poster location
             int position = getAdapterPosition();
@@ -106,7 +110,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
                     .into(mBinding.movieItemPosterIv);
 
             // Get the height that will be used to set the height of all ViewHolders' ImageViews
-            if (posterHeight == 0) {
+            if (!heightSet) {
                 posterHeight = mBinding.movieItemPosterIv.getHeight();
             }
         }

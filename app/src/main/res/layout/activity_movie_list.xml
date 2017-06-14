@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.amagh.silverscreen.MovieListActivity">
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/movie_list_rv"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:context="com.amagh.silverscreen.MovieListActivity">
 
-    <ProgressBar
-        android:id="@+id/movie_list_pb"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center" />
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movie_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/movie_list_pb"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</layout>
