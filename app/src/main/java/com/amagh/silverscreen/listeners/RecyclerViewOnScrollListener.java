@@ -1,4 +1,4 @@
-package com.amagh.silverscreen;
+package com.amagh.silverscreen.listeners;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

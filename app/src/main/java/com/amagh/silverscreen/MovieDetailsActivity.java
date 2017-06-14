@@ -19,7 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.amagh.silverscreen.adapters.ReviewAdapter;
+import com.amagh.silverscreen.adapters.TrailerAdapter;
 import com.amagh.silverscreen.databinding.ActivityMovieDetailsBinding;
+import com.amagh.silverscreen.listeners.AppBarScrollListener;
+import com.amagh.silverscreen.listeners.RecyclerViewOnScrollListener;
 import com.amagh.silverscreen.sync.MovieReviewsSyncTask;
 import com.amagh.silverscreen.sync.MovieTrailersSyncTask;
 import com.amagh.silverscreen.utilities.DatabaseUtils;

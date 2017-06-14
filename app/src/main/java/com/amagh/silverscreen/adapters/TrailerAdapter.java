@@ -1,4 +1,4 @@
-package com.amagh.silverscreen;
+package com.amagh.silverscreen.adapters;
 
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amagh.silverscreen.R;
 import com.amagh.silverscreen.databinding.ListItemTrailerBinding;
 import com.bumptech.glide.Glide;
 

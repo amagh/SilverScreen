@@ -1,4 +1,4 @@
-package com.amagh.silverscreen;
+package com.amagh.silverscreen.listeners;
 
 import android.support.design.widget.AppBarLayout;
 import android.widget.ImageView;
@@ -7,7 +7,7 @@ import android.widget.ImageView;
  * Created by hnoct on 6/9/2017.
  */
 
-abstract class AppBarScrollListener implements AppBarLayout.OnOffsetChangedListener {
+public abstract class AppBarScrollListener implements AppBarLayout.OnOffsetChangedListener {
     private int mScrollState = ScrollState.EXPANDED;
     private int mPosterState = PosterState.AT_TOP;
     private int mPreviousY;

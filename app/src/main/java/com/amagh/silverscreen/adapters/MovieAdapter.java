@@ -1,4 +1,4 @@
-package com.amagh.silverscreen;
+package com.amagh.silverscreen.adapters;
 
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amagh.silverscreen.MovieListActivity;
+import com.amagh.silverscreen.R;
 import com.amagh.silverscreen.databinding.ListItemMovieBinding;
 import com.bumptech.glide.Glide;
 
@@ -14,7 +16,7 @@ import com.bumptech.glide.Glide;
  * Created by hnoct on 6/1/2017.
  */
 
-class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     // **Mem Vars** //
     private Cursor mCursor;
@@ -22,11 +24,11 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private int posterHeight = 0;
     private boolean heightSet = false;
 
-    MovieAdapter(MovieClickHandler clickHandler) {
+    public MovieAdapter(MovieClickHandler clickHandler) {
         mClickHandler = clickHandler;
     }
 
-    void swapCursor(Cursor newCursor) {
+    public void swapCursor(Cursor newCursor) {
         // Set mem var to reference newCursor
         mCursor = newCursor;
 
@@ -65,7 +67,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
         return 0;
     }
 
-    interface MovieClickHandler {
+    public interface MovieClickHandler {
         void onMovieClick(int movieId);
     }
 

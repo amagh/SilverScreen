@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.amagh.silverscreen.adapters.MovieAdapter;
 import com.amagh.silverscreen.data.MovieContract;
 import com.amagh.silverscreen.databinding.ActivityMovieListBinding;
 import com.amagh.silverscreen.sync.MovieSyncUtils;
