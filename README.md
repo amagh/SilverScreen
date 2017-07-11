@@ -10,4 +10,4 @@ Created as part of the Udacity Nanodegree Program to showcase new skills:
  - RecyclerViews, Adapters, and ViewHolders
  - DataBinding and DataBindingUtils to populate Views
  
- [App-Preview-1](https://s3-us-west-2.amazonaws.com/udacity-profiles/production/projects/4326074645-project-40d9d07ab43d69a08847a8a9d5aea443.png?t=1499809712738)
+![App-Preview-1](http://imgur.com/8cXRLxm.png)
